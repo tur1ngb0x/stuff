@@ -1,0 +1,16 @@
+pkg.sh:
+- check
+- clean
+- commands
+- download
+- dump
+- files
+- info
+- install
+- remove
+- search
+- update
+- upgrade
+
+completely_options:
+  complete_options: -o nosort

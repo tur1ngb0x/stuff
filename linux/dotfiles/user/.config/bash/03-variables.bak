@@ -1,0 +1,19 @@
+BROWSER='brave';                                builtin export BROWSER                    # default browser
+COLORTERM='truecolor';                          builtin export COLORTERM                  # set 256 color capability
+DOCKER_BUILDKIT="1"                             builtin export DOCKER_BUILDKIT            # enable docker buildkit
+EDITOR="micro";                                 builtin export EDITOR                     # editor used by cli programs
+GIT_EDITOR='micro';                             builtin export GIT_EDITOR                 # editor used by git
+GIT_PAGER='most -s -t4 -w';                     builtin export GIT_PAGER                  # pager used by git
+HISTCONTROL='ignorespace:ignoredups:erasedups'; builtin export HISTCONTROL                # make history cleaner
+HISTFILE="${HOME}/.cache/bash_history";         builtin export HISTFILE                   # location of bash history file
+HISTFILESIZE='10000';                           builtin export HISTFILESIZE               # history max lines saved in disk
+HISTSIZE='1000';                                builtin export HISTSIZE                   # history max lines saved in memory per session
+HISTTIMEFORMAT='%Y%m%d-%H%M%S  ';               builtin export HISTTIMEFORMAT             # history line timestamp
+LESS='FRSX'                                     builtin export LESS                       # F=quit if one screen, R=raw color, S=chop lines, X=no init
+LESSHISTFILE="-";                               builtin export LESSHISTFILE               # disable history file for less
+MANPAGER='most -s -t4 -w';                      builtin export MANPAGER                   # pager used by man
+NNN_FCOLORS="D4DEB778E79F9F67D2E5E5D2"          builtin export NNN_FCOLORS                # colors used by nnn
+PAGER='most -s -t4 -w';                         builtin export PAGER                      # pager used by cli programs
+TERM="xterm-256color";                          builtin export TERM                       # terminal color support
+VIRTUAL_ENV_DISABLE_PROMPT='1';                 builtin export VIRTUAL_ENV_DISABLE_PROMPT # disable venv name in PS1 prompt
+VISUAL='micro';                                 builtin export VISUAL                     # editor used by gui programs

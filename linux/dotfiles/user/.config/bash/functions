@@ -1,0 +1,139 @@
+
+# /usr/bin/ls -Alh --time-style=+%Y%m%d-%H%M%S --color=always | sed 1d | column -N PERMS,LINKS,OWNER,GROUP,SIZE,MODIFIED,ITEMS
+
+ls() {
+    LC_ALL=C /usr/bin/ls \
+        --almost-all \
+        --color=always \
+        --format=verbose \
+        --group-directories-first \
+        --indicator-style=file-type \
+        --quoting-style=shell \
+        --time-style=+%Y%m%d-%H%M%S \
+        "$@" |
+    /usr/bin/awk 'NR==1 {next} {printf "%s\t%s:%s\t%s\t", $1,$3,$4,$6; for(i=7;i<=NF;i++) if($i=="->"){printf "@"; break} else printf "%s%s",(i>7?" ":""),$i; print ""}' | \
+    /usr/bin/column --table --separator $'\t' --output-separator ' ' -N PERMS,USER:GROUP,MODIFIED,ITEMS
+}
+
+cd() {
+    if [[ $# -eq 0 ]]; then
+        builtin cd "${HOME}" || builtin return
+    elif [[ $# -eq 1 ]]; then
+        builtin cd "${1}" || builtin return
+        if [ "$(/usr/bin/find . -mindepth 1 -maxdepth 1 -printf '.' | /usr/bin/head -c 50 | /usr/bin/wc -c)" -lt 50 ]; then
+            ls .
+        fi
+    else
+        printf 'too many arguments\n'
+    fi
+}
+
+testscript() {
+    local SCRIPT_NAME="${1:?Enter script name}"
+
+    if [[ ! "${SCRIPT_NAME}" =~ ^[A-Za-z0-9]+$ ]]; then
+        printf "Error: only 0-9 and A-Z a-z allowed"
+        return 1
+    fi
+
+    local SCRIPT_NAME="${SCRIPT_NAME}.bash"
+    local SCRIPT_DIR="${HOME}/src/stuff/linux/scripts"
+
+    install -v -D -m 0755 /dev/null "${SCRIPT_DIR}/${SCRIPT_NAME}"
+    code "${SCRIPT_DIR}/${SCRIPT_NAME}"
+    echo "Run the script with bash ${SCRIPT_DIR}/${SCRIPT_NAME}"
+}
+
+vscode-root () {
+    if [[ $# -eq 0 ]]; then
+        printf "usage: vscode-root <file(s)/folder(s)>\n"
+        return
+    fi
+
+    sudo rm -rf /tmp/vscode-root
+    sudo mkdir -p /tmp/vscode-root/data/User
+    sudo mkdir -p /tmp/vscode-root/extensions
+    sudo cp -fv /home/user/.config/Code/User/settings.json /tmp/vscode-root/data/User/settings.json
+
+    sudo code \
+        --disable-chromium-sandbox \
+        --disable-extensions \
+        --locale en-US \
+        --log off \
+        --new-window \
+        --no-sandbox \
+        --sync off \
+        --user-data-dir /tmp/vscode-root/data \
+        --extensions-dir /tmp/vscode-root/extensions \
+        "${@}"
+}
+
+path() {
+    local dir EXEC MODIFIED EXISTS
+    IFS=':' read -r -a PATHS <<< "${PATH}"
+
+    for dir in "${PATHS[@]}"; do
+        if [ -d "${dir}" ]; then
+            EXISTS=Y
+            read EXEC MODIFIED < <(find -L "${dir}" -mindepth 1 -maxdepth 1 -printf '%T@ ' \( -type f -o -type l \) -executable -printf '1\n' -o -printf '0\n' 2>/dev/null | awk '{ if ($1>max) max=$1; if ($2==1) exec++ } END { printf "%d %f\n", exec, max }')
+            MODIFIED=$(date -d "@${MODIFIED:-0}" "+%Y-%m-%d %H:%M:%S")
+        else
+            EXISTS=N; MODIFIED="-"; EXEC=0
+        fi
+
+        printf "%s\t%s\t%s\t%s\n" "${dir}" "${EXISTS}" "${MODIFIED}" "${EXEC}"
+    done | column --table --separator $'\t' -N PATH,EXISTS,MODIFIED,EXECUTABLES -R 4
+}
+
+path() {
+    local dir EXEC MODIFIED EXISTS PRIORITY=1
+    IFS=':' read -r -a PATHS <<< "${PATH}"
+
+    for dir in "${PATHS[@]}"; do
+        if [ -d "${dir}" ]; then
+            EXISTS=Y
+            read EXEC MODIFIED < <(find -L "${dir}" -mindepth 1 -maxdepth 1 -printf '%T@ ' \( -type f -o -type l \) -executable -printf '1\n' -o -printf '0\n' 2>/dev/null | awk '{ if ($1>max) max=$1; if ($2==1) exec++ } END { printf "%d %f\n", exec, max }')
+            MODIFIED=$(date -d "@${MODIFIED:-0}" "+%Y-%m-%d %H:%M:%S")
+            printf "%s\t%s\t%s\t%s\t%s\n" "${dir}" "${EXISTS}" "${PRIORITY}" "${MODIFIED}" "${EXEC}"
+            ((PRIORITY++))
+        else
+            EXISTS=N; MODIFIED="-"; EXEC=0
+            printf "%s\t%s\t%s\t%s\t%s\n" "${dir}" "${EXISTS}" "-" "${MODIFIED}" "${EXEC}"
+        fi
+    done | column --table --separator $'\t' -N PATH,EXISTS,PRIORITY,MODIFIED,EXECUTABLES -R 3,5
+}
+
+terminal-colors() {
+    local text=" * "
+    local bg fg
+
+    for fg in $(seq 0 15); do
+        printf "%02d|" "${fg}"
+        for bg in $(seq 0 15); do
+            printf "\033[48;5;%sm\033[38;5;%sm%s\033[0m|" "${bg}" "${fg}" "${text}"
+        done
+        printf "\n"
+    done | column -t -s '|' \
+        -N FG\\BG,00,01,02,03,04,05,06,07,08,09,10,11,12,13,14,15 \
+        -R 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17
+}
+
+dbx-create() {
+    [[ $# -ne 1 ]] && echo 'usage: dbx-create <image:tag>' && return
+    /usr/local/bin/distrobox create \
+    --verbose \
+    --yes \
+    --image "${1:?}" \
+    --name "${1//:/-}" \
+    --hostname "distrobox-${1//:/-}" \
+    --init 
+}
+
+dbx-enter() {
+    [[ $# -ne 1 ]] && echo 'usage: dbx-enter <image:tag>' && return
+    /usr/local/bin/distrobox enter \
+    --verbose \
+    --name "${1:?}" \
+    --clean-path \
+    --no-workdir
+}

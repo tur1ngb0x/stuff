@@ -1,0 +1,58 @@
+#### TTY OPTIONS ####
+/usr/bin/stty -echoctl                             # disable control characters (Ctrl-C, Ctrl-Z)
+/usr/bin/stty -ixon                                # disable software flow control keys (Ctrl-S and Ctrl-Q)
+/usr/bin/stty discard undef                        # disable output discard toggle (Ctrl+0)
+/usr/bin/stty eof undef                            # disable eof character keys (Ctrl-D)
+/usr/bin/stty lnext undef                          # disable literal-next key (Ctrl+V)
+/usr/bin/stty quit undef                           # disable sigquit keys (Ctrl-\)
+/usr/bin/stty rprnt undef                          # disable reprinting current input line (Ctrl-R)
+/usr/bin/stty werase undef                         # disable terminal word erase key (Ctrl-W)
+
+#### BASH OPTIONS ####
+# builtin shopt -u
+# builtin shopt -s
+builtin unalias -a
+builtin set -o ignoreeof                           # disable eof character keys (Ctrl-D)
+builtin set -o noclobber                           # prevent > from overwriting files, use >| to force
+builtin shopt -s autocd                            # cd by typing directory name
+builtin shopt -s cdable_vars                       # use cd $VARIABLE
+builtin shopt -s cdspell                           # auto fix minor typos after using cd command
+builtin shopt -s checkhash                         # reverify hashed command before execution
+builtin shopt -s checkjobs                         # warn about running jobs before exiting
+builtin shopt -s checkwinsize                      # update lines and columns after each command
+builtin shopt -s cmdhist                           # save multi line cmds as single entry in bash history
+builtin shopt -s complete_fullquote                # enable quotes during completion
+builtin shopt -s direxpand                         # expand variables for directories
+builtin shopt -s dirspell                          # auto fix minor directory name typos during completion
+builtin shopt -s globasciiranges                   # use ascii ordering instead of locale
+builtin shopt -s histappend                        # append history instead of overwriting
+builtin shopt -s histreedit                        # reload failed command in prompt for editing
+builtin shopt -s histverify                        # edit history line before execution
+builtin shopt -s hostcomplete                      # auto complete hostnames after @
+builtin shopt -s interactive_comments              # enables comment support in interactive shells
+builtin shopt -s lithist                           # preserve line breaks in multi-line commands
+builtin shopt -s progcomp                          # enable advanced completions
+builtin shopt -s progcomp_alias                    # enable advanced completions for aliases
+builtin shopt -s promptvars                        # expand shell variables
+
+#### READLINE OPTIONS ####
+# bind -P | awk -F' can be found on ' 'NF==2{print $1":"$2}' | LC_ALL=C sort | column -t -s ':'
+# bind -P | awk -F' is not bound to any keys' 'NF==2{print $1}' | LC_ALL=C sort
+builtin bind '"\C-xa": alias-expand-line'          # expand aliases inline on the current line
+builtin bind '"\e[A": history-search-backward'     # up arrow search backward in history
+builtin bind '"\e[B": history-search-forward'      # down arrow search forward in history
+builtin bind '"\C-i": menu-complete'               # tab cycles forwards through completion
+builtin bind '"\e[Z": menu-complete-backward'      # shift+tab cycles backwards through completions
+builtin bind 'set colored-completion-prefix on'    # highlights completion prefix in color
+builtin bind 'set colored-stats on'                # display metadata indicators during completion
+builtin bind 'set enable-bracketed-paste on'       # prevent copy pasted text from triggering keybindings
+builtin bind 'set expand-tilde on'                 # expand ~/ to /home/<username>
+builtin bind 'set mark-directories on'             # append / to directories
+builtin bind 'set mark-modified-lines on'          # prefix prompt sign with * for edited history lines
+builtin bind 'set mark-symlinked-directories on'   # append slash to symlinks during completion
+builtin bind 'set match-hidden-files on'           # include hidden files during completion
+builtin bind 'set menu-complete-display-prefix on' # show typed prefix during completion
+builtin bind 'set show-all-if-ambiguous on'        # list all matches automatically
+builtin bind 'set show-all-if-unmodified on'       # list all possible completions in 1st tab
+builtin bind 'set skip-completed-text on'          # do not reinsert already completed text
+builtin bind 'set visible-stats on'                # show file metadata during completion

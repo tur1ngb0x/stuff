@@ -1,0 +1,12 @@
+[global]
+font = Liberation Mono 9
+markup = full
+format = "<b>%s</b>\n%b"
+
+frame_width = 1
+frame_color = #AAAAAA
+
+notification_limit = 15
+origin = bottom-right
+
+browser = /usr/bin/xdg-open

@@ -1,0 +1,6 @@
+-novblank
+-norestrictions
+-noprecache
+-nomemrestrict
+-heapsize 2097152
+-availablevidmem 2048

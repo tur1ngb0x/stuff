@@ -1,0 +1,18 @@
+{
+    "audoindent": false,
+    "autosu": true,
+    "hlsearch": true,
+    "hltaberrors": true,
+    "hltrailingws": true,
+    "mkparents": true,
+    "pageoverlap": 1,
+    "parsecursor": true,
+    "permabackup": true,
+    "rmtrailingws": true,
+    "savecursor": true,
+    "saveundo": true,
+    "scrollspeed": 1,
+    "statusformatl": " $(modified)$(filename) • L:$(lines) P:$(percentage)% • R:$(line) C:$(col) $(status.paste)",
+    "statusformatr": "Help:$(bind:ToggleHelp) • Binds:$(bind:ToggleKeyMenu) • $(opt:encoding) • $(opt:fileformat) • $(opt:filetype) ",
+    "tabstospaces": true
+}

@@ -1,0 +1,36 @@
+# add at the end of /etc/sudoers
+# @includedir /etc/sudoers.d
+
+# install this file
+#sudo install -v -D -o root -g root -m 0440 ./99-custom /etc/sudoers.d/99-custom
+
+# set permissions
+#username   ALL=(ALL:ALL)    ALL
+%wheel      ALL=(ALL:ALL)    ALL
+%sudo       ALL=(ALL:ALL)    ALL
+
+# run commands w/o elevation
+#username hostlist=(runaslist) options: commandlist
+#username ALL=(ALL) NOPASSWD: /path/to/command
+# user ALL=(ALL) NOPASSWD: /usr/bin/ddcutil
+
+# disable ~/.sudo_as_admin_successful
+Defaults    !admin_flag
+
+# enable password feedback
+Defaults    pwfeedback
+
+# set max retries for password
+Defaults    passwd_tries=10
+
+# set cache timeout for password
+Defaults    timestamp_timeout=60
+
+# set default prompt for password
+Defaults    passprompt="sudo: enter password: "
+
+# set message for invalid password
+Defaults    badpass_message="sudo: wrong password"
+
+# set message for invalid password attempts
+Defaults    authfail_message="sudo: %d wrong attempt(s)"
