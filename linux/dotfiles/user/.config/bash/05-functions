@@ -1,0 +1,268 @@
+function diff_arrows () {
+    [[ $# -eq 0 ]] && builtin printf "usage: diff_arrows arg1 arg2\n" && builtin return
+    LC_ALL=C builtin command diff --color=always \
+        --old-line-format=$'\e[31m<\e[0m %L' \
+        --new-line-format=$'\e[32m>\e[0m %L' \
+        --unchanged-line-format='' \
+    <(builtin command awk '{print $1} ' "${1:?}" | builtin command sort) \
+    <(builtin command awk '{print $1} ' "${2:?}" | builtin command sort)
+}
+
+
+# FUNCTIONS
+function bash-cmd () {
+    [[ $# -eq 0 ]] && builtin printf "usage: bash-cmd '<command>'\n" && builtin return
+
+    builtin local file=$(builtin command mktemp --suffix=.md)
+
+    [[ -z ${file-} ]] && return
+
+    (
+        builtin printf '\033[7m# Input:\033[0m\n'
+        builtin printf '```\n'
+        builtin printf '$ %s\n' "$*"
+        builtin printf '```\n'
+        builtin printf '\033[7m# Output:\033[0m\n'
+        builtin printf '```\n'
+        builtin eval "${@:?}"
+        builtin printf '```\n'
+    ) |& builtin command tee >(
+        builtin command sed -r 's/\x1B(\[[0-9;]*[A-Za-z]|\][^\a]*\a)//g' \
+        | builtin command tee "${file}" \
+        | builtin command xclip -selection clipboard
+    )
+    # builtin command code "${file}" &>/dev/null
+}
+
+function cheat () {
+    [[ $# -eq 0 ]] && builtin printf "usage: cheat '<command>'\n" && builtin return
+    builtin command curl "https://cheat.sh/${1:?}"
+}
+
+
+function clean-bash () {
+    builtin exec /usr/bin/env --ignore-environment \
+        HOME="${HOME}" \
+        TERM="${TERM}" \
+        SHELL="${SHELL}" \
+        LANG="${LANG}" \
+        DISPLAY="${DISPLAY}" \
+        PATH="/usr/local/sbin:/usr/local/bin:/usr/bin:/bin" \
+        PS1='\[\e]0;\u@\h \w\a\]$(tput rev) \u@\h \w $(tput sgr0) $ ' \
+        /usr/bin/bash --noprofile --norc
+}
+
+function bash-clean () {
+    [[ $# -ne 0 ]] && builtin printf "usage: bash-clean\n" && builtin return
+    builtin exec /usr/bin/env \
+        --ignore-environment /usr/bin/bash \
+        --noprofile \
+        --norc
+}
+
+function bash-cmd () {
+    [[ $# -eq 0 ]] && builtin printf "usage: cmd <command>\n" && builtin return
+    builtin printf '\033[7m# Input: \033[0m\n'
+    builtin printf '```\n'
+    builtin printf '$ %s\n' "${*}"
+    builtin printf '```\n'
+    builtin printf '\033[7m# Output: \033[0m\n'
+    builtin printf '```\n'
+    builtin eval "${@:?}"
+    builtin printf '```\n'
+}
+
+function bash-cmd () {
+    [[ $# -eq 0 ]] && builtin printf "usage: cmd <command>\n" && builtin return
+
+    builtin local file
+    file=$(builtin command mktemp --suffix=.md) || return
+
+    (
+        builtin printf '\033[7m# Input:\033[0m\n'
+        builtin printf '```bash\n'
+        builtin printf '$ %s\n' "$*"
+        builtin printf '```\n'
+        builtin printf '\033[7m# Output:\033[0m\n'
+        builtin printf '```text\n'
+        builtin eval "${@:?}"
+        builtin printf '```\n'
+    ) \
+    | builtin command tee >(\
+        builtin command sed -r 's/\x1B(\[[0-9;]*[A-Za-z]|\][^\a]*\a)//g' \
+        | builtin command tee "${file}" \
+        | builtin command xclip -selection clipboard)
+
+    builtin command code "${file}" >/dev/null 2>&1
+}
+
+function bash-refresh () {
+    [[ $# -ne 0 ]] && builtin printf "usage: bash-refresh\n" && builtin return
+    command reset && command clear && builtin source "${HOME}"/.bashrc
+}
+
+function cheat () {
+    [[ $# -eq 0 ]] && builtin printf "usage: cheat <command>\n" && builtin return
+    command curl "https://cheat.sh/${1}"
+}
+
+function code-root () {
+    [[ $# -eq 0 ]] && builtin printf "usage: code-root <file(s)/folder(s)>\n" && builtin return
+    local DIR_DATA="/tmp/vscode-root/data"
+    command mkdir -p "${DIR_DATA}"
+    local DIR_EXT="/tmp/vscode-root/extensions"
+    command mkdir -p "${DIR_EXT}"
+    sudo bash -c "command code \
+            --disable-chromium-sandbox \
+            --disable-extensions \
+            --no-sandbox \
+            --reuse-window \
+            --log off \
+            --locale en-US \
+            --sync off \
+            --user-data-dir ${DIR_DATA} \
+            --extensions-dir ${DIR_EXT} \
+            ${@}"
+}
+
+function code-user () {
+    [[ $# -eq 0 ]] && builtin printf "usage: code-user <file(s)/folder(s)>\n" && builtin return
+    command code "${@}"
+}
+
+function cpsync () {
+    [[ $# -eq 0 ]] && builtin printf 'usage: cpsync <src> <dest>\n' && builtin return
+    command rsync --verbose --recursive --no-inc-recursive --compress-level=0 --human-readable --progress --stats --ipv4 "${@}" && command sync
+}
+
+function detach () {
+    [[ $# -eq 0 ]] && builtin printf "usage: detach <command>\n" && builtin return
+    (command nohup "${1}" &) &>/dev/null
+}
+
+function findd () {
+    [[ $# -eq 0 ]] && builtin printf 'usage: findd <pattern> [directory]\n' && builtin return
+    local q="${1}"; shift; local d=("${@:-${PWD}}")
+    command find "${d[@]}" -iname "*${q}*" -printf "%p\n"
+}
+
+function fzf-git-status () {
+	command git --no-pager status --porcelain=v1 \
+		| command grep -v '^??' \
+		| LC_ALL=C command sort \
+		| command fzf \
+			--layout reverse-list \
+			--style minimal \
+			--margin 0 \
+			--border none \
+			--padding 0 \
+			--preview-window "right:${1:-75}%:wrap" \
+			--preview "command git --no-pager diff --color=always \$(command echo {} | command cut -c4- )"
+}
+
+function grepp () {
+    [[ $# -eq 0 ]] && printf 'usage: grepp <pattern> [directory]\n' && return
+    command grep \
+        --color=always \
+        --ignore-case \
+        --binary-files=without-match \
+        --dereference-recursive \
+        --line-number \
+        "${1}" ${2:-.}
+}
+
+function outclip () {
+    [[ -t 0 ]] && builtin printf "usage: <command> | outclip\n" && builtin return
+    command xclip -selection clipboard
+}
+
+function outcode () {
+    [[ -t 0 ]] && builtin printf "usage: <command> | outcode\n" && builtin return
+    command code -
+}
+
+function outpaste () {
+    [[ -t 0 ]] && builtin printf "usage: <command> | outpaste\n" && builtin return
+    command pastelo
+}
+
+sort-bookmarks() {
+    [[ $# -eq 0 ]] && printf 'usage: sort-bookmarks <bookmark.html>\n' && return
+    builtin command echo "<!DOCTYPE NETSCAPE-Bookmark-file-1>"
+    builtin command echo "<DL>"
+    builtin command grep -F '<DT><A HREF="' "${1:?}" | LC_ALL=C builtin command sort
+    builtin command echo "</DL>"
+}
+
+function venv () {
+    [[ $# -ne 0 ]] && builtin printf "usage: venv\n" && builtin return
+    export VIRTUAL_ENV_DISABLE_PROMPT='1'; builtin source "${PWD}/bin/activate"
+}
+
+function yt-dlp-art () {
+    [[ $# -eq 0 ]] && builtin printf 'usage: dw-art <URL>\n' && builtin return
+    command yt-dlp \
+        --verbose \
+        --force-ipv4 \
+        --skip-download \
+        --playlist-items 1 \
+        --write-thumbnail \
+        --convert-thumbnails 'jpg' \
+        -o "cover.%(ext)s" \
+        "${1}"
+}
+
+function yt-dlp-mp3 () {
+    [[ $# -eq 0 ]] && builtin printf 'usage: dw-mp3 <URL(s)>\n' && builtin return
+    command yt-dlp \
+        --verbose \
+        --force-ipv4 \
+        --preset-alias 'mp3' \
+        --audio-quality 0 \
+        --embed-subs \
+        --embed-thumbnail \
+        --embed-metadata \
+        --embed-chapters \
+        -o '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s' \
+        "${@}"
+}
+
+function yt-dlp-mp4 () {
+    [[ $# -eq 0 ]] && builtin printf 'usage: dw-mp4 <URL(s)>\n' && builtin return
+    command yt-dlp \
+        --verbose \
+        --force-ipv4 \
+        --preset-alias 'mp4' \
+        --prefer-free-formats \
+        --sub-langs 'en.*' \
+        --embed-subs \
+        --embed-thumbnail \
+        --embed-metadata \
+        --embed-chapters -o '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s' \
+        "${@}"
+}
+
+function ls () {
+    command ls \
+        --almost-all \
+        --color=always \
+        --format=verbose \
+        --group-directories-first \
+        --human-readable \
+        --indicator-style=file-type \
+        --quoting-style=shell \
+        --time-style=+"%Y%m%d-%H%M%S" \
+        "${@}" | \
+        command sed '1d; s/ ->.*$//'
+}
+
+function cd () {
+    if [[ $# -eq 0 ]]; then
+        builtin cd "${HOME}" || return
+    else
+        builtin cd "${1}" || return
+        if [ "$(command ls --almost-all --format=verbose | command wc --lines)" -lt 50 ]; then
+            ls .
+        fi
+    fi
+}

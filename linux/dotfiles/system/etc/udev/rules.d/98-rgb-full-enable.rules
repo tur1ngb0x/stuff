@@ -1,0 +1,21 @@
+# Sets Broadcast RGB to Full for HDMI
+
+# Installation:
+# sudo apt-get install libdrm-tests
+
+# Check:
+# sudo proptest
+# sudo proptest -M i915 -D /dev/dri/card1 | grep -E -A3 'Broadcast|Connector'
+# sudo proptest -M i915 -D /dev/dri/card1 | grep -A3 -E 'Broadcast|Connector' | grep -A9 -E 'eDP-|HDMI-'
+
+# Syntax
+# sudo proptest [options] [obj id] [obj type] [prop id] [value]
+# sudo proptest $Device $Module $ObjID $ObjType $PropertyID $Value
+# sudo proptest -D /dev/dri/card1 -M i915 $ObjID $ObjType $PropertyID $Value
+
+# eDP-1 (241), Broadcast RGB (245), Full 0:255 (1)
+# ACTION=="add", SUBSYSTEM=="module", KERNEL=="i915", RUN+="/usr/bin/proptest -D /dev/dri/card1 -M i915 241 connector 245 1"
+
+# HDMI-A-1 (250), Broadcast RGB (245), Full 0:255 (1)
+TEST=="/usr/bin/proptest", SUBSYSTEM=="drm", ACTION=="add|change", RUN+="/usr/bin/proptest -D /dev/dri/card1 -M i915 250 connector 245 1"
+# ACTION=="add", SUBSYSTEM=="module", KERNEL=="i915", RUN+="/usr/bin/proptest -D /dev/dri/card1 -M i915 250 connector 245 1"

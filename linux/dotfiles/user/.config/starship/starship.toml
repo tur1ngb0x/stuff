@@ -1,0 +1,332 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# prompt
+add_newline = false
+scan_timeout = 500
+command_timeout = 1000
+
+format = """\
+$username\
+$hostname\
+$directory\
+$git_branch\
+$python\
+$line_break\
+$character\
+"""
+
+[username]
+disabled = false
+format = '([$user](10))'
+show_always = true
+
+[hostname]
+disabled = false
+format = '([@$hostname](10))'
+ssh_only = false
+
+[directory]
+disabled = false
+read_only = "ro"
+format = '( [$path](14))'
+truncate_to_repo = false
+truncation_length = 0
+
+[git_branch]
+disabled = false
+symbol = "git"
+always_show_remote = true
+format = '( [\(git:$branch\)](11))'
+
+[python]
+disabled = false
+symbol = "py"
+format = '( [\(venv:$virtualenv\)](13))'
+
+[character]
+disabled = false
+success_symbol = '[\$](15)'
+error_symbol =  '[\$](9)'
+
+[custom.windows]
+disabled = true
+command = '(Get-CIMInstance -ClassName Win32_OperatingSystem).Caption.Replace(" ", "-").ToLower() + "-" + (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\").CurrentBuild'
+format = '[($output)](dimmed white) '
+shell = ['powershell', '-command']
+use_stdin = false
+when = true
+
+[custom.linux]
+disabled = true
+command = 'source /etc/os-release && echo "${ID}-${VERSION_ID}"'
+format = '[($output)](dimmed white) '
+shell = ['bash', '-c']
+use_stdin = false
+when = true
+
+[custom.ssh]
+disabled = true
+command = '[[ -n "${SSH_TTY}" ]] && echo ssh'
+format = '[$output](dimmed white)'
+shell = ['bash', '-c']
+use_stdin = false
+when = true
+
+[time]
+disabled = true
+format = '[$time](dimmed white)'
+time_format = '%Y-%m-%d %a %H:%M:%S'
+
+[git_status]
+disabled = true
+ahead = ">"
+behind = "<"
+diverged = "<>"
+renamed = "r"
+deleted = "x"
+untracked = 'u$count'
+modified = 'w$count'
+staged = 's$count'
+format = '( [$untracked](9))( [$modified](11))( [$staged](10))'
+
+
+#######################################################################################################################
+
+[git_commit]
+tag_symbol = " tag "
+
+[aws]
+symbol = "aws "
+
+[azure]
+symbol = "az "
+
+[buf]
+symbol = "buf "
+
+[bun]
+symbol = "bun "
+
+[c]
+symbol = "C "
+
+[cpp]
+symbol = "C++ "
+
+[cobol]
+symbol = "cobol "
+
+[conda]
+symbol = "conda "
+
+[container]
+symbol = "container "
+
+[crystal]
+symbol = "cr "
+
+[cmake]
+symbol = "cmake "
+
+[daml]
+symbol = "daml "
+
+[dart]
+symbol = "dart "
+
+[deno]
+symbol = "deno "
+
+[dotnet]
+symbol = ".NET "
+
+[docker_context]
+symbol = "docker "
+
+[elixir]
+symbol = "exs "
+
+[elm]
+symbol = "elm "
+
+[fennel]
+symbol = "fnl "
+
+[fossil_branch]
+symbol = "fossil "
+
+[gcloud]
+symbol = "gcp "
+
+[gleam]
+symbol = "gleam "
+
+[golang]
+symbol = "go "
+
+[gradle]
+symbol = "gradle "
+
+[guix_shell]
+symbol = "guix "
+
+[haskell]
+symbol = "haskell "
+
+[helm]
+symbol = "helm "
+
+[hg_branch]
+symbol = "hg "
+
+[java]
+symbol = "java "
+
+[julia]
+symbol = "jl "
+
+[kotlin]
+symbol = "kt "
+
+[lua]
+symbol = "lua "
+
+[nodejs]
+symbol = "nodejs "
+
+[memory_usage]
+symbol = "memory "
+
+[meson]
+symbol = "meson "
+
+[nats]
+symbol = "nats "
+
+[nim]
+symbol = "nim "
+
+[nix_shell]
+symbol = "nix "
+
+[ocaml]
+symbol = "ml "
+
+[opa]
+symbol = "opa "
+
+[os.symbols]
+AIX = "aix "
+Alpaquita = "alq "
+AlmaLinux = "alma "
+Alpine = "alp "
+Amazon = "amz "
+Android = "andr "
+Arch = "rch "
+Artix = "atx "
+Bluefin = "blfn "
+CachyOS = "cach "
+CentOS = "cent "
+Debian = "deb "
+DragonFly = "dfbsd "
+Emscripten = "emsc "
+EndeavourOS = "ndev "
+Fedora = "fed "
+FreeBSD = "fbsd "
+Garuda = "garu "
+Gentoo = "gent "
+HardenedBSD = "hbsd "
+Illumos = "lum "
+Kali = "kali "
+Linux = "lnx "
+Mabox = "mbox "
+Macos = "mac "
+Manjaro = "mjo "
+Mariner = "mrn "
+MidnightBSD = "mid "
+Mint = "mint "
+NetBSD = "nbsd "
+NixOS = "nix "
+Nobara = "nbra "
+OpenBSD = "obsd "
+OpenCloudOS = "ocos "
+openEuler = "oeul "
+openSUSE = "osuse "
+OracleLinux = "orac "
+Pop = "pop "
+Raspbian = "rasp "
+Redhat = "rhl "
+RedHatEnterprise = "rhel "
+RockyLinux = "rky "
+Redox = "redox "
+Solus = "sol "
+SUSE = "suse "
+Ubuntu = "ubnt "
+Ultramarine = "ultm "
+Unknown = "unk "
+Uos = "uos "
+Void = "void "
+Windows = "win "
+
+[package]
+symbol = "pkg "
+
+[perl]
+symbol = "pl "
+
+[php]
+symbol = "php "
+
+[pijul_channel]
+symbol = "pijul "
+
+[pixi]
+symbol = "pixi "
+
+[pulumi]
+symbol = "pulumi "
+
+[purescript]
+symbol = "purs "
+
+[quarto]
+symbol = "quarto "
+
+[raku]
+symbol = "raku "
+
+[rlang]
+symbol = "r "
+
+[ruby]
+symbol = "rb "
+
+[rust]
+symbol = "rs "
+
+[scala]
+symbol = "scala "
+
+[spack]
+symbol = "spack "
+
+[solidity]
+symbol = "solidity "
+
+[status]
+symbol = "[x](bold red) "
+
+[sudo]
+symbol = "sudo "
+
+[swift]
+symbol = "swift "
+
+[typst]
+symbol = "typst "
+
+[terraform]
+symbol = "terraform "
+
+[zig]
+symbol = "zig "

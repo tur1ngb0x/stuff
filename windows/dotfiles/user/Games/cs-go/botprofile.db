@@ -1,0 +1,130 @@
+Default
+    Skill = 100
+    Aggression = 100
+    ReactionTime = 0
+    AttackDelay = 0
+    Teamwork = 100
+    AimFocusInitial = 20			// initial focus spread in degrees (from desired center)
+    AimFocusDecay = 0.7				// how much focus shrinks per second (.25 = 25% of size after 1 sec)
+    AimFocusOffsetScale = 0.30		// controls accuracy when tracking to target (0 == perfect, should always be < 1)
+    AimFocusInterval = 0.8			// how often focus is adjusted (smaller intervals means better movement tracking)
+    WeaponPreference = none
+    Difficulty = EXPERT
+    VoicePitch = 100
+    LookAngleMaxAccelNormal = 2000.0
+    LookAngleStiffnessNormal = 100.0
+    LookAngleDampingNormal = 25.0
+    LookAngleMaxAccelAttacking = 3000.0
+    LookAngleStiffnessAttacking = 150.0
+    LookAngleDampingAttacking = 30.0
+End
+
+Template RifleCT
+    WeaponPreference = m4a1
+    WeaponPreference = ak47
+    WeaponPreference = famas
+    WeaponPreference = galilar
+End
+
+Template RifleT
+    WeaponPreference = ak47
+    WeaponPreference = m4a1
+    WeaponPreference = galilar
+    WeaponPreference = famas
+End
+
+Template SniperCT
+    WeaponPreference = awp
+    WeaponPreference = ssg08
+    WeaponPreference = m4a1
+    WeaponPreference = ak47
+End
+
+Template SniperT
+    WeaponPreference = awp
+    WeaponPreference = ssg08
+    WeaponPreference = ak47
+    WeaponPreference = m4a1
+End
+
+Template Expert
+    Aggression = 100
+    AimFocusDecay = 0.01
+    AimFocusInitial = 0.01
+    AimfocusInterval = 0.01
+    AimFocusOffsetScale = 0.01
+    AttackDelay = 0.01
+    Difficulty = EXPERT
+    Rank = 1800
+    ReactionTime = 0.01
+    Skill = 100
+    VoicePitch = 70
+End
+
+Template Hard
+    Skill = 75
+    Rank = 1400
+    ReactionTime = 0.25
+    Difficulty = HARD
+    VoicePitch = 80
+    AimFocusInitial = 2.5
+    AimFocusDecay = 0.2
+    AimFocusOffsetScale = 0.20
+    AimFocusInterval = 0.20
+End
+
+Template Normal
+    Skill = 50
+    Rank = 1000
+    ReactionTime = 0.50
+    Difficulty = NORMAL
+    VoicePitch = 90
+    AimFocusInitial = 5.0
+    AimFocusDecay = 0.3
+    AimFocusOffsetScale = 0.30
+    AimFocusInterval = 0.30
+End
+
+Template Easy
+    Skill = 25
+    Rank = 600
+    ReactionTime = 0.75
+    Difficulty = EASY
+    VoicePitch = 100
+    AimFocusInitial = 7.5
+    AimFocusDecay = 0.4
+    AimFocusOffsetScale = 0.40
+    AimFocusInterval = 0.40
+End
+
+// Expert Counter-Terrorists
+Expert+RifleCT "Rifle-Fire"
+End
+
+Expert+RifleCT "Rifle-Water"
+End
+
+Expert+RifleCT "Rifle-Grass"
+End
+
+Expert+RifleCT "Rifle-Electric"
+End
+
+Expert+SniperCT "Sniper-Ground"
+End
+
+// Expert Terrorists
+Expert+RifleT "Rifle-Bug"
+End
+
+Expert+RifleT "Rifle-Dark"
+End
+
+Expert+RifleT "Rifle-Ghost"
+End
+
+Expert+RifleT "Rifle-Poison"
+End
+
+Expert+SniperT "Sniper-Steel"
+End

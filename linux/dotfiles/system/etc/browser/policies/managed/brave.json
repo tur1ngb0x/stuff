@@ -1,0 +1,56 @@
+{
+    // * Enabled
+    "BraveAIChatEnabled": false,
+    "BraveP3AEnabled": false,
+    "BraveStatsPingEnabled": false,
+    "BraveWebDiscoveryEnabled": false,
+    "BravePlaylistEnabled": false,
+
+    // *Disabled
+    "BraveRewardsDisabled": true,
+    "BraveNewsDisabled": true,
+    "BraveTalkDisabled": true,
+    "BraveVPNDisabled": true,
+    "BraveWalletDisabled": true,
+    "TorDisabled": true,
+
+    // * Other
+    "DefaultBraveHttpsUpgradeSetting": 2,
+
+    // Common
+    "SyncDisabled": true,
+    "DnsOverHttpsMode": "secure",
+    "DnsOverHttpsTemplates": "https://cloudflare-dns.com/dns-query https://dns.google/dns-query",
+    // Search
+    "DefaultSearchProviderEnabled": true,
+    "DefaultSearchProviderName": "gudm14",
+    "DefaultSearchProviderKeyword": "gudm14",
+    "DefaultSearchProviderSearchURL": "https://www.google.com/search?q={searchTerms}&hl=en&pws=0&udm=14",
+    "DefaultSearchProviderSuggestURL": "https://www.google.com/complete/search?q={searchTerms}&output=chrome&client=chrome&hl=en&pws=0",
+    "HomepageIsNewTabPage": true,
+    "NewTabPageLocation": "https://google.com"
+}
+
+// https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy
+// https://github.com/brave/brave-core/tree/master/components/policy/resources/templates/policy_definitions
+// https://github.com/brave/brave-core/tree/master/components/policy/resources/templates/policy_definitions/BraveSoftware
+
+// save brave.txt
+// /usr/bin/curl -s 'https://api.github.com/repos/brave/brave-core/contents/components/policy/resources/templates/policy_definitions/BraveSoftware' \
+//     | /usr/bin/grep -i '"name": ' \
+//     >| /tmp/brave.txt
+
+// save brave.json
+// /usr/bin/curl -s https://api.github.com/repos/brave/brave-core/contents/components/policy/resources/templates/policy_definitions/BraveSoftware \
+// | /usr/bin/jq --indent 4 '
+//   [ .[]
+//     | select(.name | endswith(".yaml"))
+//     | select(.name != ".group.details.yaml")
+//     | .name
+//   ]
+//   | map(sub("\\.yaml$"; ""))
+//   | map({ (.): "VALUE" })
+//   | add
+// ' | tee /tmp/brave.json
+
+// sudo install -v -D -o root -g root -m 644 ./brave.json /etc/brave/policies/managed/brave.json

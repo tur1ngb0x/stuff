@@ -1,0 +1,91 @@
+########################################################################################################################
+# function to list all packages (installed + not installed)
+########################################################################################################################
+
+# complete -W "$(cat /home/user/.local/share/AM/list 2>/dev/null)" am
+
+# _am_pkgs_all() {
+#     find "${HOME}/.local/share/AM" -mindepth 1 -maxdepth 1 -type f -name "x86_64-*" \
+#     -exec awk -F ' : ' '{ sub(/^◆ /, ""); print $1 }' {} +
+
+# }
+
+# _am_pkgs_installed() {
+#     find "${HOME}/.cache/appman" -mindepth 1 -maxdepth 1 -type f -name "files-args" \
+#     -exec awk -F '\\t*\\|\\t*' '{ sub(/ ◆ /, ""); print $1 }' {} + | sort
+# }
+
+_am_pkgs_all() {
+    # am package files
+    local am_files=(
+        "${HOME}/.local/share/AM/x86_64-appbundle" # *.appbundle
+        "${HOME}/.local/share/AM/x86_64-busybox"   # *.busybox
+        "${HOME}/.local/share/AM/x86_64-python"    # *.python
+        "${HOME}/.local/share/AM/x86_64-soarpkg"   # *.soarpkg
+        "${HOME}/.local/share/AM/x86_64-appimages"
+        "${HOME}/.local/share/AM/x86_64-apps"
+        "${HOME}/.local/share/AM/x86_64-portable"
+    )
+
+    # create empty array to hold files
+    local files=()
+
+    # iterate through am package files
+    for f in "${am_files[@]}"; do
+        if [[ -f "${f}" ]]; then
+            files+=("${f}")
+        fi
+    done
+
+    # if array size is zero, return immediately
+    if [[ "${#files[@]}" -eq 0 ]]; then
+        return
+    fi
+
+    # set ' : '' as column separator
+    # set extensions for packages
+    # remove all lines starting with the diamond symbol
+    # add extensions to packages
+    # print packages
+    # sort packages
+    awk -F ' : ' '
+        BEGIN {
+            extension["'"${HOME}/.local/share/AM/x86_64-appbundle"'"] = ".appbundle"
+            extension["'"${HOME}/.local/share/AM/x86_64-busybox"'"]   = ".busybox"
+            extension["'"${HOME}/.local/share/AM/x86_64-python"'"]    = ".python"
+            extension["'"${HOME}/.local/share/AM/x86_64-soarpkg"'"]   = ".soarpkg"
+            extension["'"${HOME}/.local/share/AM/x86_64-appimages"'"] = ""
+            extension["'"${HOME}/.local/share/AM/x86_64-apps"'"]      = ""
+            extension["'"${HOME}/.local/share/AM/x86_64-portable"'"]  = ""
+        }
+        {
+            sub(/^◆ /,"")
+            print $1 extension[FILENAME]
+        } ' "${files[@]}"
+        # | command -p sort
+    return
+}
+
+
+
+########################################################################################################################
+# function to list all installed packages
+########################################################################################################################
+_am_pkgs_installed() {
+    # "${HOME}/.cache/appman/
+    # is cleared after - $ appman clean
+    # is generated after - $ appman files
+    if [[ -f "${HOME}/.cache/appman/files-args" ]] && [[ -s "${HOME}/.cache/appman/files-args" ]]; then
+        # use awk to clean up entries by removing markers and output sorted filenames
+        command -p awk '{sub(/ ◆ /,""); print $1}' "${HOME}/.cache/appman/files-args"
+        # | command -p sort
+    else
+        # return if cache file does not exist or is empty
+        builtin return
+    fi
+}
+
+########################################################################################################################
+#
+########################################################################################################################
+

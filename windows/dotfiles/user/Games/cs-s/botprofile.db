@@ -1,0 +1,103 @@
+///////////////////////////////////////////////////////////////////////
+// Counter-Strike: Source
+// cstrike/custom/botprofile/BotProfile.db
+// bot_profile_db 'custom/botprofile/BotProfile.db'
+///////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////
+// DEFAULT TEMPLATE
+///////////////////////////////////////////////////////////////////////
+Default
+    Aggression = 0
+    AttackDelay = 0.25
+    Difficulty = EXPERT+HARD+NORMAL+EASY
+    ReactionTime = 0.25
+    Skill = 50
+    Teamwork = 0
+    VoicePitch = 80
+    WeaponPreference = None
+End
+
+///////////////////////////////////////////////////////////////////////
+// WEAPON TEMPLATES
+///////////////////////////////////////////////////////////////////////
+Template ASSAULT
+    Skin = 1
+    WeaponPreference = ak47
+    WeaponPreference = m4a1
+    WeaponPreference = galil
+    WeaponPreference = famas
+End
+
+Template CQB
+    Skin = 2
+    WeaponPreference = p90
+    WeaponPreference = mp5
+    WeaponPreference = mac10
+    WeaponPreference = tmp
+End
+
+Template SNIPER
+    Skin = 3
+    WeaponPreference = g3sg1
+    WeaponPreference = sg550
+    WeaponPreference = awp
+    WeaponPreference = scout
+End
+
+Template BREACHER
+    Skin = 4
+    WeaponPreference = xm1014
+    WeaponPreference = m3
+    WeaponPreference = elite
+    WeaponPreference = fiveseven
+End
+
+///////////////////////////////////////////////////////////////////////
+// BOT TEMPLATES
+///////////////////////////////////////////////////////////////////////
+Template CT
+    Aggression = 0
+    Teamwork = 100
+End
+
+Template T
+    Aggression = 100
+    Teamwork = 0
+End
+
+///////////////////////////////////////////////////////////////////////
+// CT TEMPLATES
+///////////////////////////////////////////////////////////////////////
+CT+ASSAULT GRASS
+End
+
+CT+ASSAULT WATER
+End
+
+CT+CQB FIRE
+End
+
+CT+BREACHER GROUND
+End
+
+CT+SNIPER ELECTRIC
+End
+
+///////////////////////////////////////////////////////////////////////
+// T TEMPLATES
+///////////////////////////////////////////////////////////////////////
+T+ASSAULT SOUND
+End
+
+T+ASSAULT LIGHT
+End
+
+T+CQB PLASMA
+End
+
+T+BREACHER NUCLEAR
+End
+
+T+SNIPER COSMIC
+End

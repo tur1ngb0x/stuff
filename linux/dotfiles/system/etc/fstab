@@ -1,0 +1,37 @@
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+# BLOCK          #MOUNT                #FS         #OPTIONS #DUMP #FSCK
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+PARTUUID=XXXX    /boot/efi             vfat        defaults,noatime,x-gvfs-show,x-gvfs-name=esp 0 0
+PARTUUID=XXXX    /                     ext4        defaults,noatime,x-gvfs-show,x-gvfs-name=root 0 0
+PARTUUID=XXXX    /home                 ext4        defaults,noatime,x-gvfs-show,x-gvfs-name=home 0 0
+
+PARTUUID=XXXX    /linuxdata            ext4        defaults,noatime,noauto,nofail,user 0 0
+PARTUUID=XXXX    /mnt/linuxbackup      ext4        defaults,noatime,noauto,nofail,user 0 0
+
+PARTUUID=XXXX    /mnt/data             exfat       defaults,noatime,noauto,nofail,user,uid=1000,gid=1000,umask=0022 0 0
+PARTUUID=XXXX    /mnt/backup           exfat       defaults,noatime,noauto,nofail,user,uid=1000,gid=1000,umask=0022 0 0
+
+PARTUUID=XXXX    /windata              ntfs3       defaults,noatime,noauto,nofail,user,uid=1000,gid=1000,umask=0022,windows_names,iocharset=utf8 0 0
+PARTUUID=XXXX    /mnt/windowsbackup    ntfs-3g     defaults,noatime,noauto,nofail,user,uid=1000,gid=1000,umask=0022,windows_names,locale=en_US.utf8 0 0
+
+
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+# EXTRA OPTIONS
+# ------------------------------------------------------------------------------------------------------------------------------------------------------
+# gnome vfs - set name and icon for disk
+# x-gvfs-show,x-gvfs-name=XXXX-XXXX,x-gvfs-icon=drive-harddisk-solidstate-symbolic,x-gvfs-symbolic-icon=drive-harddisk-solidstate-symbolic
+
+# continue booting even when disk is missing
+# nofail, x-systemd.device-timeout=1ms
+
+# lets any user mount disk, but only that user can unmount the disk
+# user
+
+# lets any user mount and unmount the disk
+# users
+
+# disable write caching for disk
+# sync
+
+# disable execution of binaries
+# noexec

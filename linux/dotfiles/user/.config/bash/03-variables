@@ -1,0 +1,15 @@
+COLORTERM='truecolor';                          builtin export COLORTERM
+EDITOR="micro";                                 builtin export EDITOR
+GIT_EDITOR='micro';                             builtin export GIT_EDITOR
+GIT_PAGER='most -s -t4 -w';                     builtin export GIT_PAGER
+HISTCONTROL='ignorespace:ignoredups:erasedups'; builtin export HISTCONTROL
+HISTFILE="${HOME}/.cache/bash_history";         builtin export HISTFILE
+HISTFILESIZE='10000';                           builtin export HISTFILESIZE
+HISTSIZE='1000';                                builtin export HISTSIZE
+HISTTIMEFORMAT='%Y%m%d-%H%M%S  ';               builtin export HISTTIMEFORMAT
+LESS='FRSX'                                     builtin export LESS
+LESSHISTFILE="-";                               builtin export LESSHISTFILE
+MANPAGER='most -s -t4 -w';                      builtin export MANPAGER
+PAGER='most -s -t4 -w';                         builtin export PAGER
+TERM="xterm-256color";                          builtin export TERM
+VISUAL='micro';                                 builtin export VISUAL

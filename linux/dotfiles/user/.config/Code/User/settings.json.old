@@ -1,0 +1,157 @@
+{
+	// Diff Editor
+	"diffEditor.codeLens": true,
+	"diffEditor.ignoreTrimWhitespace": false,
+
+	// Editor
+	"editor.accessibilitySupport": "off",
+	"editor.bracketPairColorization.enabled": true,
+	"editor.cursorBlinking": "phase",
+	"editor.cursorSmoothCaretAnimation": "on",
+	"editor.cursorWidth": 2,
+	"editor.detectIndentation": false,
+	"editor.fontFamily": "'LiterationMono Nerd Font'",
+	"editor.fontLigatures": false,
+	"editor.fontSize": 15,
+	"editor.insertSpaces": false,
+	"editor.minimap.maxColumn": 80,
+	"editor.minimap.renderCharacters": false,
+	"editor.minimap.showSlider": "always",
+	"editor.mouseWheelZoom": true,
+	"editor.renderLineHighlight": "all",
+	"editor.scrollbar.horizontalScrollbarSize": 10,
+	"editor.scrollbar.verticalScrollbarSize": 10,
+	"editor.semanticHighlighting.enabled": true,
+	"editor.smoothScrolling": true,
+	"editor.tabSize": 4,
+
+	// Explorer
+	"explorer.confirmDelete": true,
+	"explorer.incrementalNaming": "smart",
+	"explorer.openEditors.sortOrder": "alphabetical",
+	"explorer.openEditors.visible": 8,
+	"explorer.sortOrder": "filesFirst",
+
+	// Extensions
+	"extensions.autoCheckUpdates": false,
+	"extensions.autoUpdate": "onlyEnabledExtensions",
+	"extensions.ignoreRecommendations": true,
+
+	// Files
+	"files.insertFinalNewline": true,
+	"files.trimFinalNewlines": true,
+	"files.trimTrailingWhitespace": true,
+
+	// Git
+	"git.autofetch": true,
+    "git.confirmSync": false,
+	"git.enableSmartCommit": true,
+	"git.defaultCloneDirectory": "$HOME/src/",
+	"git.inputValidation": true,
+	"git.postCommitCommand": "sync",
+	"git.scanRepositories": [ "$HOME/src" ],
+	"git.showPushSuccessNotification": true,
+	"git.supportCancellation": true,
+	"git.terminalGitEditor": true,
+	"git.timeline.showUncommitted": true,
+
+	// Markdown
+	"markdown.preview.breaks": true,
+
+	// Security
+	"security.workspace.trust.enabled": false,
+
+	// Telemetry
+	"telemetry.telemetryLevel": "off",
+
+	// Terminal
+	"terminal.integrated.confirmOnExit": "hasChildProcesses",
+	"terminal.integrated.copyOnSelection": true,
+	"terminal.integrated.cursorBlinking": true,
+	"terminal.integrated.cursorStyle": "line",
+	"terminal.integrated.cursorWidth": 2,
+	"terminal.integrated.defaultProfile.linux": "bash",
+	"terminal.integrated.enableVisualBell": true,
+	"terminal.integrated.fontSize": 17,
+	"terminal.integrated.fontWeight": "normal",
+	"terminal.integrated.fontWeightBold": "normal",
+	"terminal.integrated.gpuAcceleration": "off",
+	"window.commandCenter": false,
+	"window.confirmBeforeClose": "always",
+	"window.customTitleBarVisibility": "auto",
+	"window.dialogStyle": "custom",
+	"window.newWindowDimensions": "maximized",
+	"window.title": "${dirty}${remoteName}${separator}${activeEditorLong}",
+	"window.titleBarStyle": "custom",
+
+	// Workbench
+	"workbench.activityBar.location": "default",
+	"workbench.colorTheme": "Monokai",
+	"workbench.editor.highlightModifiedTabs": true,
+	"workbench.editor.pinnedTabSizing": "compact",
+	"workbench.editor.tabSizing": "fixed",
+	"workbench.enableExperiments": false,
+	"workbench.iconTheme": "material-icon-theme",
+	"workbench.layoutControl.enabled": true,
+	"workbench.list.smoothScrolling": true,
+	"workbench.productIconTheme": "material-product-icons",
+	"workbench.startupEditor": "none",
+	"workbench.tree.indent": 20,
+	"workbench.tree.renderIndentGuides": "always",
+
+	// Extension: Code Runner (formulahendry.code-runner)
+	"code-runner.clearPreviousOutput": true,
+	"code-runner.enableAppInsights": false,
+	"code-runner.saveFileBeforeRun": true,
+	"code-runner.executorMap":
+	{
+		"c": "gcc $fullFileName -o /tmp/$fileNameWithoutExt && gnome-terminal --title=$fullFileName --window --hide-menubar -- bash -c '/tmp/$fileNameWithoutExt;read line'",
+		"cpp": "g++ $fullFileName -o /tmp/$fileNameWithoutExt && gnome-terminal --title=$fullFileName --window --hide-menubar -- bash -c '/tmp/$fileNameWithoutExt;read line'",
+		"python": "gnome-terminal --title=$fullFileName --window --hide-menubar -- bash -c 'python $fullFileName;read line'"
+	},
+
+	// Extension: Markdown PDF (yzane.markdown-pdf)
+	"markdown-pdf.breaks": true,
+	"markdown-pdf.convertOnSave": false,
+	"markdown-pdf.displayHeaderFooter": false,
+	"markdown-pdf.emoji": false,
+	"markdown-pdf.footerTemplate": "",
+	"markdown-pdf.format": "A4",
+	"markdown-pdf.headerTemplate": "",
+	"markdown-pdf.margin.bottom": "1cm",
+	"markdown-pdf.margin.left": "1cm",
+	"markdown-pdf.margin.right": "1cm",
+	"markdown-pdf.margin.top": "1cm",
+	"markdown-pdf.outputDirectory": "~/Documents",
+	"markdown-pdf.printBackground": false,
+	"markdown-pdf.highlightStyle": "github.css",
+	"markdown-pdf.type": ["pdf","html","png","jpg"],
+
+	// Extension: Markdown PDF Enhanced (hd101wyy.markdown-preview-enhanced)
+	"markdown-preview-enhanced.enableEmojiSyntax": false,
+	"markdown-preview-enhanced.enableLinkify": false,
+	"markdown-preview-enhanced.enableWikiLinkSyntax": false,
+	"markdown-preview-enhanced.HTML5EmbedUseImageSyntax": false,
+	"markdown-preview-enhanced.mathRenderingOption": "MathJax",
+	"markdown-preview-enhanced.previewColorScheme": "editorColorScheme",
+	"markdown-preview-enhanced.useGitHubStylePipedLink": true,
+
+	// Extension: Material Icons (PKief.material-icon-theme)
+	"material-icon-theme.folders.color": "#42a5f5",
+
+	// Extension: Remote Explorer (ms-vscode.remote-explorer)
+	"remote-explorer.foldersSortOrder": "alphabetical",
+
+	// Extension: Remote SSH (ms-vscode-remote.remote-ssh)
+	"remote.SSH.connectTimeout": 60,
+	"remote.SSH.enableRemoteCommand": true,
+	"remote.SSH.maxReconnectionAttempts": 8,
+	"remote.SSH.remotePlatform": { "a5": "linux" },
+	"remote.SSH.showLoginTerminal": true,
+	"remote.SSH.useLocalServer": false,
+
+	// Extension: Remote WSL (ms-vscode-remote.remote-wsl)
+	"remote.WSL.debug": true,
+
+	// End
+}

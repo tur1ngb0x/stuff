@@ -1,0 +1,12 @@
+# $HOME/.wslconfig
+# https://learn.microsoft.com/en-us/windows/wsl/wsl-config#main-wsl-settings
+
+[wsl2]
+kernelCommandLine = audit=0 consoleblank=0 ipv6.disable=1 modprobe.blacklist=nouveau mitigations=off net.ifnames=0 nosgx nowatchdog pci=noaer
+processors = 2
+memory = 4GB
+swap = 0
+defaultVhdSize = 50GB
+vmIdleTimeout = -1
+debugConsole = true
+maxCrashDumpCount = 0

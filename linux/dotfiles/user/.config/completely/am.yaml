@@ -1,0 +1,108 @@
+am:
+- about:
+  - '$(_am_pkgs_all)'
+- apikey:
+  - delete
+- backup:
+  - '$(_am_pkgs_installed)'
+- clean
+- clone:
+  - '$(_am_pkgs_installed)'
+  - -i
+  - --system
+  - --user
+- config:
+  - '$(_am_pkgs_installed)'
+- downgrade:
+  - '$(_am_pkgs_installed)'
+- download:
+  - --convert
+- extra
+- files:
+  - --byname
+  - --less
+- help
+- hide:
+  - '$(_am_pkgs_installed)'
+- home:
+  - '$(_am_pkgs_installed)'
+- icons:
+  - '$(_am_pkgs_installed)'
+  - --all
+- install:
+  - '$(_am_pkgs_all)'
+  - --appbundle
+  - --busybox
+  - --debug
+  - --force-latest
+  - --icons
+  - --python
+  - --sandbox
+  - --soarpkg
+- install-appimage:
+  - '$(_am_pkgs_installed)'
+  - --appbundle
+  - --busybox
+  - --debug
+  - --force-latest
+  - --icons
+  - --python
+  - --sandbox
+  - --soarpkg
+- integrate
+- list:
+  - --all
+  - --appimage
+  - --portable
+- lock:
+  - '$(_am_pkgs_installed)'
+- newrepo:
+  - 'off'
+  - 'on'
+  - add
+  - info
+  - purge
+  - select
+- nolibfuse:
+  - '$(_am_pkgs_installed)'
+- overwrite:
+  - '$(_am_pkgs_installed)'
+- query:
+  - '$(_am_pkgs_all)'
+  - --all
+  - --appimages
+  - --pkg
+  - --portable
+- reinstall:
+  - '$(_am_pkgs_installed)'
+  - --all
+- relocate
+- remove:
+  - '$(_am_pkgs_installed)'
+- sandbox:
+  - '$(_am_pkgs_installed)'
+- sync
+- template:
+  - '$(_am_pkgs_all)'
+- translate
+- unhide:
+  - '$(_am_pkgs_installed)'
+- unlock:
+  - '$(_am_pkgs_installed)'
+- update:
+  - --apps
+  - --debug
+  - --launcher
+- version
+- '--devmode-disable'
+- '--devmode-enable'
+- '--disable-notifications'
+- '--disable-sandbox':
+  - '$(_am_pkgs_installed)'
+- '--enable-notifications'
+- '--enable-sandbox'
+- '--force-latest':
+  - '$(_am_pkgs_installed)'
+- '--launcher'
+- '--system'
+- '--user'

@@ -1,0 +1,19 @@
+{
+    "audoindent": false,
+    "autosu": true,
+    "cursorline": true,
+    "detectlimit": 1000,
+    "hltaberrors": true,
+    "hltrailingws": true,
+    "keymenu": true,
+    "mkparents": true,
+    "permabackup": true,
+    "rmtrailingws": true,
+    "savecursor": true,
+    "saveundo": true,
+    "scrollbar": true,
+    "scrollspeed": 4,
+    "statusformatl": "$(modified)$(filename) • L:$(lines) R:$(line) C:$(col) $(status.paste)",
+    "statusformatr": "$(opt:encoding) • $(opt:fileformat) • $(opt:filetype)",
+    "tabstospaces": true
+}

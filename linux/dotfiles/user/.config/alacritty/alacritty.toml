@@ -1,0 +1,128 @@
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[cursor]
+blink_interval = 500
+thickness = 0.10
+unfocused_hollow = true
+
+[cursor.style]
+shape = "Beam"
+blinking = "On"
+
+[env]
+TERM = 'xterm-256color'
+
+[font]
+size = 13.0
+
+[font.normal]
+# family = "Adwaita Mono"
+# family = 'Liberation Mono'
+family = "Lilex Nerd Font Mono"
+# family = "Terminus"
+# style = "Regular"
+style = "Light"
+
+[general]
+live_config_reload = true
+
+[scrolling]
+multiplier = 1
+
+[selection]
+save_to_clipboard = true
+
+[terminal.shell]
+program = "bash"
+#args = ["--rcfile", "/home/user/.config/bash/config"]
+#program = "fish"
+#program = "zsh"
+#program = "pwsh"
+
+[window]
+decorations = "Full"
+dynamic_padding = true
+opacity = 1.00
+startup_mode = "Maximized"
+title = "alacritty"
+dynamic_title = true
+decorations_theme_variant = "Dark"
+
+[window.padding]
+x = 10
+y = 10
+
+[window.class]
+instance = 'Alacritty'
+general = 'Alacritty'
+
+#######################################################################################################################
+# KEYBOARD
+#######################################################################################################################
+[[keyboard.bindings]]
+action = "Copy"
+key = "C"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "ToggleFullscreen"
+key = "F11"
+mods = "None"
+
+[[keyboard.bindings]]
+action = "ScrollPageUp"
+key = "PageUp"
+mods = "Control"
+
+[[keyboard.bindings]]
+action = "ScrollPageDown"
+key = "PageDown"
+mods = "Control"
+
+
+#######################################################################################################################
+# MOUSE
+#######################################################################################################################
+[mouse]
+hide_when_typing = true
+
+[[mouse.bindings]]
+mouse = "Right"
+action = "Paste"
+
+[[mouse.bindings]]
+mouse = "Middle"
+action = "Paste"
+
+#######################################################################################################################
+# COLORS - xterm
+#######################################################################################################################
+[colors.primary]
+background = '#000000'
+foreground = '#ffffff'
+
+[colors.normal]
+black   = '#000000'
+red     = '#cd0000'
+green   = '#00cd00'
+yellow  = '#cdcd00'
+blue    = '#0000ee'
+magenta = '#cd00cd'
+cyan    = '#00cdcd'
+white   = '#e5e5e5'
+
+[colors.bright]
+black   = '#7f7f7f'
+red     = '#ff0000'
+green   = '#00ff00'
+yellow  = '#ffff00'
+blue    = '#5c5cff'
+magenta = '#ff00ff'
+cyan    = '#00ffff'
+white   = '#ffffff'
