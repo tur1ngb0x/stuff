@@ -1,0 +1,20 @@
+GRUB_CMDLINE_LINUX_DEFAULT="audit=0 consoleblank=0 ipv6.disable=1 modprobe.blacklist=nouveau mitigations=off net.ifnames=0 nosgx nowatchdog pci=noaer"
+GRUB_DISABLE_OS_PROBER="true"
+GRUB_DISABLE_RECOVERY="true"
+GRUB_DISABLE_SUBMENU="true"
+GRUB_GFXMODE="1920x1080,1024x768,auto"
+GRUB_GFXPAYLOAD_LINUX="text"
+GRUB_TERMINAL_OUTPUT="console"
+GRUB_TERMINAL="console"
+GRUB_TIMEOUT_STYLE="menu"
+GRUB_TIMEOUT="10"
+
+#GRUB_DISTRIBUTOR="Arch"
+#GRUB_DISTRIBUTOR="Debian"
+#GRUB_DISTRIBUTOR="Fedora"
+#GRUB_DISTRIBUTOR="Linux Mint"
+#GRUB_DISTRIBUTOR="Ubuntu"
+#GRUB_ENABLE_BLSCFG="true"
+
+# Enable for max logging
+# rd.shell rd.loglevel=8 loglevel=7 printk.time=1 systemd.show_status=1 systemd.log_level=debug systemd.log_target=console systemd.log_color=1 systemd.journald.forward_to_console=1

@@ -1,0 +1,232 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+readonly BROWSERS=(
+    brave
+    chrome
+    chromium
+    edge
+    firefox
+)
+
+declare -rA BROWSER_BINARY_PATHS=(
+    ["brave"]="/usr/bin/brave"
+    ["chrome"]="/usr/bin/google-chrome-stable"
+    ["chromium"]="/usr/bin/chromium"
+    ["edge"]="/usr/bin/microsoft-edge-stable"
+    ["firefox"]="/usr/bin/firefox /usr/bin/firefox-developer-edition"
+)
+
+declare -rA BROWSER_POLICY_PATHS=(
+    ["brave"]="/etc/brave/policies/managed/brave.json"
+    ["chrome"]="/etc/opt/chrome/policies/managed/chrome.json"
+    ["chromium"]="/etc/chromium/policies/managed/chromium.json"
+    ["edge"]="/etc/opt/edge/policies/managed/edge.json"
+    ["firefox"]="/etc/firefox/policies/policies.json /usr/lib/firefox/distribution/policies.json"
+)
+
+declare -rA BROWSER_DATA_PATHS=(
+    ["brave"]="${HOME}/.config/BraveSoftware/Brave-Browser"
+    ["chrome"]="${HOME}/.config/google-chrome"
+    ["chromium"]="${HOME}/.config/chromium"
+    ["edge"]="${HOME}/.config/microsoft-edge"
+    ["firefox"]="${HOME}/.config/mozilla/firefox"
+)
+
+declare -rA BROWSER_CACHE_PATHS=(
+    ["brave"]="${HOME}/.cache/BraveSoftware/Brave-Browser"
+    ["chrome"]="${HOME}/.cache/google-chrome"
+    ["chromium"]="${HOME}/.cache/chromium"
+    ["edge"]="${HOME}/.cache/microsoft-edge"
+    ["firefox"]="${HOME}/.cache/mozilla/firefox"
+)
+
+readonly ANSI_RESET=$'\033[0m'
+
+readonly COLOR_GREEN=$'\033[38;2;0;255;0m'
+readonly COLOR_BLUE=$'\033[38;2;0;128;255m'
+readonly COLOR_RED=$'\033[38;2;255;0;0m'
+readonly COLOR_YELLOW=$'\033[38;2;255;255;0m'
+readonly COLOR_MAGENTA=$'\033[38;2;255;0;255m'
+
+FOUND_BROWSERS=()
+
+print_key_value() {
+    local key="$1"
+    local value="$2"
+    local color="$3"
+
+    printf "%-18s : %b%s%b\n" "$key" "$color" "$value" "$ANSI_RESET"
+}
+
+print_separator() {
+    printf '%*s\n' 80 '' | tr ' ' '-'
+}
+
+format_path() {
+    local path="$1"
+
+    if [[ "$path" == "$HOME"* ]]; then
+        printf '~%s\n' "${path#"$HOME"}"
+    else
+        printf '%s\n' "$path"
+    fi
+}
+
+detect_path() {
+    local path="$1"
+
+    if [[ -e "$path" ]]; then
+        format_path "$path"
+    else
+        echo "-"
+    fi
+}
+
+detect_first_existing_path() {
+    local paths_string="$1"
+    local path
+    local -a paths
+
+    read -r -a paths <<<"$paths_string"
+
+    for path in "${paths[@]}"; do
+        if [[ -e "$path" ]]; then
+            format_path "$path"
+            return 0
+        fi
+    done
+
+    echo "-"
+}
+
+browser_get_binary() {
+    local browser="$1"
+    local path
+    local -a paths
+
+    [[ -v BROWSER_BINARY_PATHS["$browser"] ]] || return 1
+
+    read -r -a paths <<<"${BROWSER_BINARY_PATHS["$browser"]}"
+
+    for path in "${paths[@]}"; do
+        if [[ -x "$path" ]]; then
+            echo "$path"
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+browser_get_version() {
+    local browser="$1"
+    local binary_path
+    local version
+
+    if ! binary_path="$(browser_get_binary "$browser")"; then
+        echo "-"
+        return 0
+    fi
+
+    if version="$("$binary_path" --version 2>/dev/null)"; then
+        echo "$version" | grep -oE '[0-9]+([.][0-9]+)+'
+    else
+        echo "-"
+    fi
+}
+
+browser_detect() {
+    local browser="$1"
+    local binary_path="-"
+    local data_path
+    local cache_path
+    local path
+    local -a policy_paths
+
+    [[ -v BROWSER_BINARY_PATHS["$browser"] ]] || return 1
+    [[ -v BROWSER_POLICY_PATHS["$browser"] ]] || return 1
+    [[ -v BROWSER_DATA_PATHS["$browser"] ]] || return 1
+    [[ -v BROWSER_CACHE_PATHS["$browser"] ]] || return 1
+
+    data_path="${BROWSER_DATA_PATHS["$browser"]}"
+    cache_path="${BROWSER_CACHE_PATHS["$browser"]}"
+
+    if binary_path="$(browser_get_binary "$browser")"; then
+        [[ -n "$binary_path" ]]
+        return 0
+    fi
+
+    read -r -a policy_paths <<<"${BROWSER_POLICY_PATHS["$browser"]}"
+
+    for path in "${policy_paths[@]}"; do
+        if [[ -e "$path" ]]; then
+            return 0
+        fi
+    done
+
+    [[ -e "$data_path" ]] ||
+        [[ -e "$cache_path" ]]
+}
+
+for browser in "${BROWSERS[@]}"; do
+    if browser_detect "$browser"; then
+        FOUND_BROWSERS+=("$browser")
+    fi
+done
+
+if [[ "${#FOUND_BROWSERS[@]}" -eq 0 ]]; then
+    echo "no browsers detected"
+    exit 0
+fi
+
+for i in "${!FOUND_BROWSERS[@]}"; do
+    local_browser="${FOUND_BROWSERS[$i]}"
+
+    browser_path="-"
+
+    if browser_path="$(browser_get_binary "$local_browser")"; then
+        :
+    fi
+
+    browser_version="$(browser_get_version "$local_browser")"
+
+    browser_policy="$(
+        detect_first_existing_path \
+            "${BROWSER_POLICY_PATHS["$local_browser"]}"
+    )"
+
+    browser_data="$(detect_path "${BROWSER_DATA_PATHS["$local_browser"]}")"
+
+    browser_cache="$(detect_path "${BROWSER_CACHE_PATHS["$local_browser"]}")"
+
+    print_key_value \
+        "${local_browser} path" \
+        "$(format_path "$browser_path")" \
+        "$COLOR_GREEN"
+
+    print_key_value \
+        "${local_browser} version" \
+        "$browser_version" \
+        "$COLOR_BLUE"
+
+    print_key_value \
+        "${local_browser} data" \
+        "$browser_data" \
+        "$COLOR_YELLOW"
+
+    print_key_value \
+        "${local_browser} cache" \
+        "$browser_cache" \
+        "$COLOR_MAGENTA"
+
+    print_key_value \
+        "${local_browser} policies" \
+        "$browser_policy" \
+        "$COLOR_RED"
+
+    if [[ "$i" -lt $(("${#FOUND_BROWSERS[@]}" - 1)) ]]; then
+        print_separator
+    fi
+done

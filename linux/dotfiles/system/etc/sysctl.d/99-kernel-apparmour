@@ -1,0 +1,4 @@
+# https://ubuntu.com/blog/ubuntu-23-10-restricted-unprivileged-user-namespaces
+
+kernel.apparmor_restrict_unprivileged_unconfined=0
+kernel.apparmor_restrict_unprivileged_userns=0

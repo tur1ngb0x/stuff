@@ -1,0 +1,95 @@
+{
+  "agent": {
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": [],
+  },
+  "buffer_font_family": "Adwaita Mono",
+  "buffer_font_features": {
+    "calt": false,
+  },
+  "buffer_font_size": 15,
+  "buffer_font_weight": 300.0,
+  "cli_default_open_behavior": "existing_window",
+  "collaboration_panel": {
+    "button": false,
+    "dock": "left",
+  },
+  "debugger": {
+    "button": false,
+  },
+  "diagnostics": {
+    "button": false,
+  },
+  "disable_ai": true,
+  "git": {
+    "disable_git": true,
+    "git_gutter": "hide",
+    "inline_blame": {
+      "enabled": false,
+    },
+  },
+  "git_panel": {
+    "dock": "left",
+  },
+  "gutter": {
+    "bookmarks": false,
+    "breakpoints": false,
+    "folds": false,
+    "min_line_number_digits": 0,
+    "runnables": false,
+  },
+  "inline_code_actions": false,
+  "outline_panel": {
+    "dock": "left",
+    "indent_size": 15.0,
+  },
+  "project_panel": {
+    "dock": "left",
+    "indent_guides": {
+      "show": "always",
+    },
+    "indent_size": 15.0,
+  },
+  "session": {
+    "trust_all_worktrees": true,
+  },
+  "status_bar": {
+    "active_encoding_button": "enabled",
+  },
+  "tab_bar": {
+    "show_nav_history_buttons": false,
+    "show_tab_bar_buttons": false,
+  },
+  "tabs": {
+    "file_icons": true,
+    "show_close_button": "always",
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false,
+  },
+  "text_rendering_mode": "subpixel",
+  "theme": {
+    "dark": "Ayu Dark",
+    "light": "One Light",
+    "mode": "dark",
+  },
+  "title_bar": {
+    "show_branch_name": false,
+    "show_menus": false,
+    "show_onboarding_banner": false,
+    "show_project_items": false,
+    "show_sign_in": false,
+    "show_user_menu": true,
+    "show_user_picture": false,
+  },
+  "toolbar": {
+    "agent_review": false,
+    "breadcrumbs": false,
+    "quick_actions": false,
+  },
+  "ui_font_family": "Adwaita Sans",
+  "ui_font_size": 14,
+  "when_closing_with_no_tabs": "keep_window_open",
+}

@@ -1,0 +1,23 @@
+# $HOME/.wslconfig
+# https://learn.microsoft.com/en-us/windows/wsl/wsl-config#main-wsl-settings
+# https://greengorych.io/blog/complete-wslconfig-reference-and-template/
+
+[general]
+distributionInstallPath = C:\Users\user\src\wsl
+instanceIdleTimeout=-1
+
+[wsl2]
+kernelCommandLine = audit=0 consoleblank=0 ipv6.disable=1 modprobe.blacklist=nouveau mitigations=off net.ifnames=0 nosgx nowatchdog pci=noaer
+processors = 4
+memory = 4GB
+swap = 0
+defaultVhdSize = 50GB
+gpuSupport = true
+guiApplications = true
+vmIdleTimeout = -1
+debugConsole = true
+earlyBootLogging = true
+maxCrashDumpCount = 0
+crashDumpFolder = C:\Users\user\src\wsl\crashdumps
+ipv6 = false
+telemetry = false

@@ -1,0 +1,14 @@
+Flycast         Map         Remap       Function
+Start           Return                  Start/Pause
+Up              Up          W           Up/Jump
+Down            Down        Z           Down/Crouch
+Left            Left        A           Left/Move Left
+Right           Right       S           Right/Move Right
+A               X           G           Low Punch
+B               C           J           Low Kick
+X               S           T           High Punch
+Y               D           U           High Kick
+Left Trigger    F           H           Block
+Right Trigger   V           Space       Run
+Menu            Tab                     -
+Fast Forward    Space       P           -

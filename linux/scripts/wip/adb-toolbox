@@ -1,0 +1,678 @@
+#!/usr/bin/env bash
+
+readonly SCRIPT_NAME="${0##*/}"
+
+readonly SUBJECT="${1:-}"
+readonly IDENTIFIER="${2:-}"
+readonly DOMAIN="${3:-}"
+readonly ACTION="${4:-}"
+
+readonly COMPLETION_FUNCTION="_${SCRIPT_NAME//-/_}"
+
+#######################################################################
+# COLORS
+#######################################################################
+
+readonly RESET=$'\033[0m'
+readonly BOLD=$'\033[1m'
+readonly UNDERLINE=$'\033[4m'
+readonly REVERSE=$'\033[7m'
+
+#######################################################################
+# DATA
+#######################################################################
+
+# readonly ARRAY_PERMISSIONS=(
+#     'ACCESS_FINE_LOCATION'
+#     'ACCESS_COARSE_LOCATION'
+#     'ACCESS_BACKGROUND_LOCATION'
+
+#     'CAMERA'
+#     'RECORD_AUDIO'
+
+#     'READ_CONTACTS'
+#     'WRITE_CONTACTS'
+
+#     'READ_CALENDAR'
+#     'WRITE_CALENDAR'
+
+#     'READ_PHONE_STATE'
+#     'CALL_PHONE'
+#     'ANSWER_PHONE_CALLS'
+
+#     'READ_CALL_LOG'
+#     'WRITE_CALL_LOG'
+
+#     'SEND_SMS'
+#     'RECEIVE_SMS'
+#     'READ_SMS'
+
+#     'BODY_SENSORS'
+#     'BODY_SENSORS_BACKGROUND'
+#     'ACTIVITY_RECOGNITION'
+
+#     'BLUETOOTH_SCAN'
+#     'BLUETOOTH_CONNECT'
+#     'BLUETOOTH_ADVERTISE'
+
+#     'READ_MEDIA_AUDIO'
+#     'READ_MEDIA_VIDEO'
+#     'READ_MEDIA_IMAGES'
+#     'READ_MEDIA_VISUAL_USER_SELECTED'
+
+#     'POST_NOTIFICATIONS'
+#     'USE_FULL_SCREEN_INTENT'
+
+#     'NEARBY_WIFI_DEVICES'
+#     'CHANGE_WIFI_STATE'
+
+#     'SCHEDULE_EXACT_ALARM'
+
+#     'REQUEST_INSTALL_PACKAGES'
+
+#     'MANAGE_EXTERNAL_STORAGE'
+#     'MANAGE_MEDIA'
+# )
+
+# readonly ARRAY_APPOPS=(
+#     'ACCESS_NOTIFICATIONS'
+#     'GET_USAGE_STATS'
+#     'MANAGE_EXTERNAL_STORAGE'
+#     'PICTURE_IN_PICTURE'
+#     'RUN_ANY_IN_BACKGROUND'
+#     'RUN_IN_BACKGROUND'
+#     'SEND_SMS'
+#     'START_FOREGROUND'
+#     'SYSTEM_ALERT_WINDOW'
+#     'WAKE_LOCK'
+#     'WRITE_SETTINGS'
+# )
+
+readonly ARRAY_PERMISSIONS=(
+    # Location
+    'ACCESS_FINE_LOCATION'
+    'ACCESS_COARSE_LOCATION'
+    'ACCESS_BACKGROUND_LOCATION'
+
+    # Camera & Microphone
+    'CAMERA'
+    'RECORD_AUDIO'
+
+    # Contacts
+    'READ_CONTACTS'
+    'WRITE_CONTACTS'
+
+    # Calendar
+    'READ_CALENDAR'
+    'WRITE_CALENDAR'
+
+    # Phone
+    'READ_PHONE_STATE'
+    'READ_PHONE_NUMBERS'
+    'CALL_PHONE'
+    'ANSWER_PHONE_CALLS'
+
+    # Call logs
+    'READ_CALL_LOG'
+    'WRITE_CALL_LOG'
+
+    # SMS
+    'SEND_SMS'
+    'RECEIVE_SMS'
+    'READ_SMS'
+    'RECEIVE_MMS'
+    'RECEIVE_WAP_PUSH'
+
+    # Health & Activity
+    'BODY_SENSORS'
+    'BODY_SENSORS_BACKGROUND'
+    'ACTIVITY_RECOGNITION'
+
+    # Bluetooth
+    'BLUETOOTH_SCAN'
+    'BLUETOOTH_CONNECT'
+    'BLUETOOTH_ADVERTISE'
+
+    # Nearby devices
+    'NEARBY_WIFI_DEVICES'
+    'UWB_RANGING'
+
+    # Media
+    'READ_MEDIA_AUDIO'
+    'READ_MEDIA_VIDEO'
+    'READ_MEDIA_IMAGES'
+    'READ_MEDIA_VISUAL_USER_SELECTED'
+
+    # Notifications
+    'POST_NOTIFICATIONS'
+    'USE_FULL_SCREEN_INTENT'
+
+    # Special app access
+    'SCHEDULE_EXACT_ALARM'
+    'REQUEST_INSTALL_PACKAGES'
+    'MANAGE_EXTERNAL_STORAGE'
+    'MANAGE_MEDIA'
+)
+
+readonly ARRAY_APPOPS=(
+    'ACCESS_NOTIFICATIONS'
+    'ACCESS_RESTRICTED_SETTINGS'
+
+    'BIND_ACCESSIBILITY_SERVICE'
+    'BIND_VPN_SERVICE'
+
+    'GET_USAGE_STATS'
+
+    'MANAGE_EXTERNAL_STORAGE'
+
+    'PICTURE_IN_PICTURE'
+
+    'REQUEST_INSTALL_PACKAGES'
+
+    'RUN_ANY_IN_BACKGROUND'
+    'RUN_IN_BACKGROUND'
+
+    'SCHEDULE_EXACT_ALARM'
+
+    'SEND_SMS'
+
+    'START_FOREGROUND'
+
+    'SYSTEM_ALERT_WINDOW'
+
+    'USE_FULL_SCREEN_INTENT'
+
+    'WAKE_LOCK'
+
+    'WRITE_SETTINGS'
+)
+
+readonly ARRAY_PACKAGE_PERMISSION_ACTIONS=(
+    'list'
+    'revoke'
+)
+
+readonly ARRAY_PACKAGE_APPOPS_ACTIONS=(
+    'list'
+    'deny'
+    'reset'
+)
+
+readonly ARRAY_COMPLETION_ACTIONS=(
+    'list'
+    'save'
+)
+
+#######################################################################
+# FUNCTIONS
+#######################################################################
+
+usage() {
+    cat <<EOF
+${BOLD}${UNDERLINE}USAGE:${RESET}
+${SCRIPT_NAME} permission <PERMISSION|all> packages    <list|revoke>
+${SCRIPT_NAME} appops     <APPOPS|all>     packages    <list|deny|reset>
+${SCRIPT_NAME} package    <PACKAGE|all>    permissions <list|revoke>
+${SCRIPT_NAME} package    <PACKAGE|all>    appops      <list|deny|reset>
+${SCRIPT_NAME} completion <list|save>
+
+${BOLD}${UNDERLINE}PERMISSIONS:${RESET}
+$(printf '%s\n' "${ARRAY_PERMISSIONS[@]}" | column)
+
+${BOLD}${UNDERLINE}APPOPS:${RESET}
+$(printf '%s\n' "${ARRAY_APPOPS[@]}" | column)
+
+EOF
+}
+
+die() {
+    echo "Error: ${*}" >&2
+    exit 1
+}
+
+die_usage() {
+    echo "Error: ${*}" >&2
+    echo >&2
+    usage
+    exit 1
+}
+
+array_contains() {
+    local needle="${1}"
+    local item
+
+    shift
+
+    for item in "${@}"; do
+        [ "${item}" = "${needle}" ] && return 0
+    done
+
+    return 1
+}
+
+check_requirements() {
+    command -v adb >/dev/null 2>&1 || die "adb not found in PATH"
+
+    echo "scanning for devices..."
+
+    adb devices -l 2>/dev/null | awk 'NR > 1 && $2 == "device" { found=1; print } END { exit(found ? 0 : 1) }' || die "no connected adb devices found"
+
+    echo
+}
+
+print_header() {
+    local title="${1}"
+
+    printf '%s# %s%s\n' "${REVERSE}" "${title}" "${RESET}"
+}
+
+validate_args() {
+    [ "${#}" -eq 0 ] && { usage; exit 1; }
+
+    case "${SUBJECT}" in
+        permission)
+            [ "${#}" -ne 4 ] && { usage; exit 1; }
+
+            [ "${DOMAIN}" != "packages" ] && die_usage "permission only supports packages domain"
+
+            [ "${IDENTIFIER}" = "all" ] && case "${ACTION}" in
+                list) return 0 ;;
+                *) die_usage "'all' only supports list" ;;
+            esac
+
+            array_contains "${IDENTIFIER}" "${ARRAY_PERMISSIONS[@]}" || die_usage "unsupported permission: ${IDENTIFIER}"
+
+            case "${ACTION}" in
+                list|revoke) ;;
+                *) die_usage "unsupported permission action: ${ACTION}" ;;
+            esac
+            ;;
+
+        appops)
+            [ "${#}" -ne 4 ] && { usage; exit 1; }
+
+            [ "${DOMAIN}" != "packages" ] && die_usage "appops only supports packages domain"
+
+            [ "${IDENTIFIER}" = "all" ] && case "${ACTION}" in
+                list) return 0 ;;
+                *) die_usage "'all' only supports list" ;;
+            esac
+
+            array_contains "${IDENTIFIER}" "${ARRAY_APPOPS[@]}" || die_usage "unsupported appops: ${IDENTIFIER}"
+
+            case "${ACTION}" in
+                list|deny|reset) ;;
+                *) die_usage "unsupported appops action: ${ACTION}" ;;
+            esac
+            ;;
+
+        package)
+            [ "${#}" -ne 4 ] && { usage; exit 1; }
+
+            case "${DOMAIN}" in
+                permissions)
+                    array_contains "${ACTION}" "${ARRAY_PACKAGE_PERMISSION_ACTIONS[@]}" || die_usage "unsupported package permissions action: ${ACTION}"
+                    ;;
+
+                appops)
+                    array_contains "${ACTION}" "${ARRAY_PACKAGE_APPOPS_ACTIONS[@]}" || die_usage "unsupported package appops action: ${ACTION}"
+                    ;;
+
+                *)
+                    die_usage "unsupported package domain: ${DOMAIN}"
+                    ;;
+            esac
+            ;;
+
+        completion)
+            [ "${#}" -ne 2 ] && { usage; exit 1; }
+
+            array_contains "${IDENTIFIER}" "${ARRAY_COMPLETION_ACTIONS[@]}" || die_usage "unsupported completion action: ${IDENTIFIER}"
+            ;;
+
+        *)
+            usage
+            exit 1
+            ;;
+    esac
+}
+
+list_packages_by_permission() {
+    local permission="android.permission.${1}"
+
+    adb shell "for pkg in \$(cmd package list packages -3 | sed 's/^package://'); do granted=\$(dumpsys package \"\${pkg}\" 2>/dev/null | grep -F '${permission}' | grep 'granted=true' || true); [ -n \"\${granted}\" ] && echo \"\${pkg}\"; done" | sort -u
+}
+
+revoke_packages_by_permission() {
+    local permission="android.permission.${IDENTIFIER}"
+    local pkg
+
+    list_packages_by_permission "${IDENTIFIER}" | while IFS= read -r pkg; do
+        [ -z "${pkg}" ] && continue
+
+        adb shell pm revoke "${pkg}" "${permission}"
+
+        echo "revoked ${permission} -> ${pkg}"
+    done
+}
+
+list_packages_by_appops() {
+    local appops="${1}"
+
+    { adb shell appops query-op "${appops}" allow; adb shell appops query-op "${appops}" foreground; } 2>/dev/null | sort -u
+}
+
+deny_packages_by_appops() {
+    local pkg
+
+    list_packages_by_appops "${IDENTIFIER}" | while IFS= read -r pkg; do
+        [ -z "${pkg}" ] && continue
+
+        adb shell appops set "${pkg}" "${IDENTIFIER}" deny
+
+        echo "denied ${IDENTIFIER} -> ${pkg}"
+    done
+}
+
+reset_packages_by_appops() {
+    local pkg
+
+    { adb shell appops query-op "${IDENTIFIER}" allow; adb shell appops query-op "${IDENTIFIER}" foreground; adb shell appops query-op "${IDENTIFIER}" deny; adb shell appops query-op "${IDENTIFIER}" ignore; } 2>/dev/null | sort -u | while IFS= read -r pkg; do
+        [ -z "${pkg}" ] && continue
+
+        adb shell appops reset "${pkg}"
+
+        echo "reset ${IDENTIFIER} -> ${pkg}"
+    done
+}
+
+list_permissions_by_package_single() {
+    local package="${1}"
+
+    print_header "${package}"
+
+    adb shell dumpsys package "${package}" | grep 'android.permission.*granted=true' | sort -u || true
+
+    echo
+}
+
+list_permissions_by_package() {
+    local pkg
+
+    [ "${IDENTIFIER}" = "all" ] && {
+        adb shell cmd package list packages -3 | sed 's/^package://' | sort -u | while IFS= read -r pkg; do
+            [ -z "${pkg}" ] && continue
+
+            list_permissions_by_package_single "${pkg}"
+        done
+
+        return
+    }
+
+    list_permissions_by_package_single "${IDENTIFIER}"
+}
+
+revoke_permissions_by_package_single() {
+    local package="${1}"
+    local permission
+
+    for permission in "${ARRAY_PERMISSIONS[@]}"; do
+        adb shell pm revoke "${package}" "android.permission.${permission}" 2>/dev/null || true
+
+        echo "revoked android.permission.${permission} -> ${package}"
+    done
+}
+
+revoke_permissions_by_package() {
+    local pkg
+
+    [ "${IDENTIFIER}" = "all" ] && {
+        adb shell cmd package list packages -3 | sed 's/^package://' | sort -u | while IFS= read -r pkg; do
+            [ -z "${pkg}" ] && continue
+
+            revoke_permissions_by_package_single "${pkg}"
+        done
+
+        return
+    }
+
+    revoke_permissions_by_package_single "${IDENTIFIER}"
+}
+
+list_appops_by_package_single() {
+    local package="${1}"
+
+    print_header "${package}"
+
+    adb shell appops get "${package}" | sort -u
+
+    echo
+}
+
+list_appops_by_package() {
+    local pkg
+
+    [ "${IDENTIFIER}" = "all" ] && {
+        adb shell cmd package list packages -3 | sed 's/^package://' | sort -u | while IFS= read -r pkg; do
+            [ -z "${pkg}" ] && continue
+
+            list_appops_by_package_single "${pkg}"
+        done
+
+        return
+    }
+
+    list_appops_by_package_single "${IDENTIFIER}"
+}
+
+deny_appops_by_package_single() {
+    local package="${1}"
+    local appops
+
+    for appops in "${ARRAY_APPOPS[@]}"; do
+        adb shell appops set "${package}" "${appops}" deny 2>/dev/null || true
+
+        echo "denied ${appops} -> ${package}"
+    done
+}
+
+deny_appops_by_package() {
+    local pkg
+
+    [ "${IDENTIFIER}" = "all" ] && {
+        adb shell cmd package list packages -3 | sed 's/^package://' | sort -u | while IFS= read -r pkg; do
+            [ -z "${pkg}" ] && continue
+
+            deny_appops_by_package_single "${pkg}"
+        done
+
+        return
+    }
+
+    deny_appops_by_package_single "${IDENTIFIER}"
+}
+
+reset_appops_by_package_single() {
+    local package="${1}"
+
+    adb shell appops reset "${package}"
+
+    echo "reset appops -> ${package}"
+}
+
+reset_appops_by_package() {
+    local pkg
+
+    [ "${IDENTIFIER}" = "all" ] && {
+        adb shell cmd package list packages -3 | sed 's/^package://' | sort -u | while IFS= read -r pkg; do
+            [ -z "${pkg}" ] && continue
+
+            reset_appops_by_package_single "${pkg}"
+        done
+
+        return
+    }
+
+    reset_appops_by_package_single "${IDENTIFIER}"
+}
+
+print_bash_completion() {
+    cat <<EOF
+#!/usr/bin/env bash
+
+${COMPLETION_FUNCTION}() {
+    local cur
+    local subject
+    local domain
+    local permissions
+    local appops
+    local packages
+    local package_permission_actions
+    local package_appops_actions
+    local completion_actions
+
+    COMPREPLY=()
+
+    cur="\${COMP_WORDS[\${COMP_CWORD}]}"
+    subject="\${COMP_WORDS[1]}"
+    domain="\${COMP_WORDS[3]}"
+
+    permissions="${ARRAY_PERMISSIONS[*]}"
+    appops="${ARRAY_APPOPS[*]}"
+
+    package_permission_actions="${ARRAY_PACKAGE_PERMISSION_ACTIONS[*]}"
+    package_appops_actions="${ARRAY_PACKAGE_APPOPS_ACTIONS[*]}"
+    completion_actions="${ARRAY_COMPLETION_ACTIONS[*]}"
+
+    packages="\$(adb shell cmd package list packages -3 2>/dev/null | sed 's/^package://')"
+
+    case "\${COMP_CWORD}" in
+        1)
+            COMPREPLY=(\$(compgen -W "permission appops package completion" -- "\${cur}"))
+            ;;
+
+        2)
+            case "\${subject}" in
+                permission) COMPREPLY=(\$(compgen -W "all \${permissions}" -- "\${cur}")) ;;
+                appops) COMPREPLY=(\$(compgen -W "all \${appops}" -- "\${cur}")) ;;
+                package) COMPREPLY=(\$(compgen -W "all \${packages}" -- "\${cur}")) ;;
+                completion) COMPREPLY=(\$(compgen -W "\${completion_actions}" -- "\${cur}")) ;;
+            esac
+            ;;
+
+        3)
+            case "\${subject}" in
+                permission|appops) COMPREPLY=(\$(compgen -W "packages" -- "\${cur}")) ;;
+                package) COMPREPLY=(\$(compgen -W "permissions appops" -- "\${cur}")) ;;
+            esac
+            ;;
+
+        4)
+            case "\${subject}:\${domain}" in
+                permission:packages) COMPREPLY=(\$(compgen -W "\${package_permission_actions}" -- "\${cur}")) ;;
+                appops:packages) COMPREPLY=(\$(compgen -W "\${package_appops_actions}" -- "\${cur}")) ;;
+                package:permissions) COMPREPLY=(\$(compgen -W "\${package_permission_actions}" -- "\${cur}")) ;;
+                package:appops) COMPREPLY=(\$(compgen -W "\${package_appops_actions}" -- "\${cur}")) ;;
+            esac
+            ;;
+    esac
+}
+
+complete -F ${COMPLETION_FUNCTION} ${SCRIPT_NAME}
+EOF
+}
+
+save_bash_completion() {
+    local completion_dir="/home/user/.local/share/bash-completion/completions"
+    local completion_file="${completion_dir}/${SCRIPT_NAME}"
+
+    mkdir -p "${completion_dir}"
+
+    print_bash_completion >| "${completion_file}"
+
+    echo "generated -> ${completion_file}"
+}
+
+main() {
+    check_requirements
+    validate_args "${@}"
+
+    case "${SUBJECT}:${DOMAIN}:${ACTION}" in
+        permission:packages:list)
+            [ "${IDENTIFIER}" = "all" ] && {
+                local item
+
+                for item in "${ARRAY_PERMISSIONS[@]}"; do
+                    print_header "${item}"
+
+                    list_packages_by_permission "${item}"
+
+                    echo
+                done
+
+                return
+            }
+
+            list_packages_by_permission "${IDENTIFIER}"
+            ;;
+
+        permission:packages:revoke)
+            revoke_packages_by_permission
+            ;;
+
+        appops:packages:list)
+            [ "${IDENTIFIER}" = "all" ] && {
+                local item
+
+                for item in "${ARRAY_APPOPS[@]}"; do
+                    print_header "${item}"
+
+                    list_packages_by_appops "${item}"
+
+                    echo
+                done
+
+                return
+            }
+
+            list_packages_by_appops "${IDENTIFIER}"
+            ;;
+
+        appops:packages:deny)
+            deny_packages_by_appops
+            ;;
+
+        appops:packages:reset)
+            reset_packages_by_appops
+            ;;
+
+        package:permissions:list)
+            list_permissions_by_package
+            ;;
+
+        package:permissions:revoke)
+            revoke_permissions_by_package
+            ;;
+
+        package:appops:list)
+            list_appops_by_package
+            ;;
+
+        package:appops:deny)
+            deny_appops_by_package
+            ;;
+
+        package:appops:reset)
+            reset_appops_by_package
+            ;;
+
+        completion::*)
+            case "${IDENTIFIER}" in
+                list) print_bash_completion ;;
+                save) save_bash_completion ;;
+            esac
+            ;;
+    esac
+}
+
+main "${@}"

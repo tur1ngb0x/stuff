@@ -1,0 +1,165 @@
+# -----------------------------------------------------------------------------------------------------------------------
+# VARIABLES
+set $LEFT Left
+set $UP Up
+set $DOWN Down
+set $RIGHT Right
+set $ALTERNATE Mod1
+set $ESCAPE Escape
+set $RETURN Return
+set $SHIFT Shift
+set $SPACE space
+set $SUPER Mod4
+set $MOUSE3 button2
+set $WS1 "1: CODE"
+set $WS2 "2: WEB"
+set $WS3 "3: FILES"
+set $WS4 "4: CHAT"
+set $WS5 "5: GAMES"
+
+set $DISPLAY ~/.config/i3/scripts/i3-displays.sh
+set $LOGOUT ~/.config/i3/scripts/i3-session.sh
+set $SCREENSHOT ~/.config/i3/scripts/i3-screenshot.sh
+set $TOUCHPAD ~/.config/i3/scripts/i3-touchpad.sh
+
+set $COMPOSITOR picom --backend glx --vsync --daemon --no-fading-openclose
+set $LAUNCHER i3-dmenu-desktop
+set $LAUNCHER xfce4-popup-whiskermenu --center
+set $LOCKER i3lock --color=000000 --ignore-empty-password --show-failed-attempts
+set $MIC_MUTE XF86AudioMicMute
+set $MIC_MUTE_CMD pactl set-source-mute @DEFAULT_SOURCE@ toggle
+set $NETWORK nm-applet
+set $NOTIFICATION dunst -conf ~/.config/i3/dunstrc
+set $PANEL xfce4-panel --disable-wm-check
+set $POLKIT /usr/bin/lxpolkit
+set $TERMINAL alacritty
+set $VOL_DOWN XF86AudioLowerVolume
+set $VOL_DOWN_CMD pactl set-sink-volume @DEFAULT_SINK@ -5%
+set $VOL_MUTE XF86AudioMute
+set $VOL_MUTE_CMD pactl set-sink-mute @DEFAULT_SINK@ toggle
+set $VOL_UP XF86AudioRaiseVolume
+set $VOL_UP_CMD pactl set-sink-volume @DEFAULT_SINK@ +5%
+set $WALLPAPER feh --no-fehbg --bg-fill /usr/share/backgrounds/000000.png
+set $XDGDEX dex --autostart --environment i3
+set $XRDB xrdb -merge ~/.Xresources
+set $XSETTINGSD xsettingsd
+
+floating_modifier $ALTERNATE
+tiling_drag modifier titlebar
+
+# -----------------------------------------------------------------------------------------------------------------------
+# AUTOSTART
+exec --no-startup-id $XDGDEX
+exec --no-startup-id $POLKIT
+#exec --no-startup-id $DISPLAY
+exec --no-startup-id $NETWORK
+exec --no-startup-id $COMPOSITOR
+exec --no-startup-id $PANEL
+exec --no-startup-id $NOTIFICATION
+exec --no-startup-id $TOUCHPAD
+
+# -----------------------------------------------------------------------------------------------------------------------
+# KEYS
+bindsym $SUPER+$DOWN focus down
+bindsym $SUPER+$LEFT focus left
+bindsym $SUPER+$RIGHT focus right
+bindsym $SUPER+$UP focus up
+bindsym $SUPER+$SHIFT+$DOWN move down
+bindsym $SUPER+$SHIFT+$LEFT move left
+bindsym $SUPER+$SHIFT+$RIGHT move right
+bindsym $SUPER+$SHIFT+$UP move up
+
+bindsym $SUPER+$SHIFT+q kill
+bindsym --release --whole-window $SUPER+$MOUSE3 kill
+bindsym $SUPER+$SHIFT+r restart
+bindsym $SUPER+$SHIFT+c reload
+
+bindsym $SUPER+$SHIFT+$SPACE floating toggle
+bindsym $SUPER+$SPACE focus mode_toggle
+bindsym $SUPER+a focus parent
+bindsym $SUPER+f fullscreen toggle
+bindsym $SUPER+s split toggle
+bindsym $SUPER+t layout toggle tabbed stacking split
+bindsym $SUPER+e layout toggle split
+
+bindsym $SUPER+1 workspace number $WS1
+bindsym $SUPER+2 workspace number $WS2
+bindsym $SUPER+3 workspace number $WS3
+bindsym $SUPER+4 workspace number $WS4
+bindsym $SUPER+5 workspace number $WS5
+
+bindsym $SUPER+$SHIFT+1 move container to workspace number $WS1
+bindsym $SUPER+$SHIFT+2 move container to workspace number $WS2
+bindsym $SUPER+$SHIFT+3 move container to workspace number $WS3
+bindsym $SUPER+$SHIFT+4 move container to workspace number $WS4
+bindsym $SUPER+$SHIFT+5 move container to workspace number $WS5
+
+bindsym $VOL_DOWN exec --no-startup-id $VOL_DOWN_CMD
+bindsym $VOL_MUTE exec --no-startup-id $VOL_MUTE_CMD
+bindsym $VOL_UP exec --no-startup-id $VOL_UP_CMD
+bindsym $MIC_MUTE exec --no-startup-id $MIC_MUTE_CMD
+
+bindsym --release $SUPER+$SHIFT+s exec --no-startup-id $SCREENSHOT
+bindsym $SUPER+$RETURN exec --no-startup-id $TERMINAL
+bindsym $SUPER+$SHIFT+l exec --no-startup-id $LOGOUT
+bindsym $SUPER+d exec --no-startup-id $LAUNCHER
+bindsym $SUPER+l exec --no-startup-id $LOCKER
+bindsym $SUPER+$SHIFT+p exec --no-startup-id $DISPLAY
+
+# -----------------------------------------------------------------------------------------------------------------------
+# MODES
+mode "resize" {
+    bindsym $LEFT resize grow width 5 px
+    bindsym $UP resize grow height 5 px
+    bindsym $DOWN resize shrink height 5 px
+    bindsym $RIGHT resize shrink width 5 px
+    bindsym $ESCAPE exec --no-startup-id notify-send -e -r 999 -t 2500 "i3" "Resize mode disabled"; mode "default"
+    bindsym $RETURN exec --no-startup-id notify-send -e -r 999 -t 2500 "i3" "Resize mode disabled"; mode "default"
+    bindsym $SUPER+r exec --no-startup-id notify-send -e -r 999 -t 2500 "i3" "Resize mode disabled"; mode "default"
+}
+bindsym $SUPER+r exec --no-startup-id notify-send -e -r 999 -t 0 "i3" "Resize mode enabled"; mode "resize"
+
+# -----------------------------------------------------------------------------------------------------------------------
+# WM
+focus_follows_mouse yes
+focus_on_window_activation focus
+gaps inner 0
+gaps outer 0
+title_align center
+
+for_window [all] border pixel 2
+for_window [all] default_border pixel 2
+for_window [all] default_floating_border pixel 2
+for_window [all] hide_edge_borders none
+for_window [all] title_window_icon on
+for_window [all] title_format "%title"
+
+# -----------------------------------------------------------------------------------------------------------------------
+# COLORS
+client.focused #83CAFA #51A2DA #FFFFFF #83CAFA #51A2DA
+client.focused_inactive #8C8C8C #4C4C4C #FFFFFF #4C4C4C #8C8C8C
+client.unfocused #4C4C4C #222222 #888888 #292D2E #222222
+client.urgent #EC69A0 #DB3279 #FFFFFF #DB3279 #DB3279
+client.placeholder #000000 #0C0C0C #FFFFFF #000000 #0C0C0C
+client.background #FFFFFF
+
+# -----------------------------------------------------------------------------------------------------------------------
+# WIP
+# i3 version 4.24
+# https://github.com/i3/i3
+# https://i3wm.org/docs/userguide.html
+# http://xahlee.info/linux/linux_show_keycode_keysym.html
+
+# set $POLKIT     /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1      # debian  - polkit-gnome
+# set $POLKIT     /usr/libexec/polkit-gnome-authentication-agent-1                    # fedora  - polkit-gnome
+# set $POLKIT     /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1           # arch    - polkit-gnome
+# set $POLKIT     /usr/lib/x86_64-linux-gnu/libexec/polkit-kde-authentication-agent-1 # debian  - polkit-kde-agent-1
+# set $POLKIT     /usr/libexec/polkit-kde-authentication-agent-1                      # fedora  - polkit-kde
+# set $POLKIT     /usr/lib/polkit-kde-authentication-agent-1                          # arch    - polkit-kde-agent
+# set $LAUNCHER   xfce4-popup-whiskermenu --center
+# set $LAUNCHER   rofi -modi drun -show drun -show-icons -font 'Liberation Sans 9' -drun-display-format ' | {name} | {exec}'
+# set $TERMINAL   alacritty
+# set $TERMINAL   gnome-terminal
+# set $TERMINAL   konsole
+# set $TERMINAL   xfce4-terminal
+# set $LOGOUT     "i3-nagbar --type warning --message 'Exit current i3 session?' -B 'Yes' 'i3-msg exit'"
