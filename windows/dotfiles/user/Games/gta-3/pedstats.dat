@@ -1,0 +1,48 @@
+# A – Type name – string – Ignored by engine; ordering must match expected rows
+# B – Flee distance – float – Distance ped will run before stopping/fleeing
+# C – Heading change rate – float (in degrees) – How quickly ped turns or changes direction
+# D – Fear – integer [0-100] – 100 means “scared of everything”
+# E – Temper – integer [0-100] – 100 means very aggressive (“bad tempered”)
+# F – Lawfulness – integer [0-100] – 100 means highly law-abiding (“boy scout”)
+# G – Sexiness – integer [0-100] – Aesthetic/attraction parameter in ambient logic
+# H – Attack strength – float – Multiplier applied to damage when attacking
+# I – Defend weakness – float – Multiplier applied to damage when receiving
+# J – Stat flags – integer (bitmask) – Enables/disables melee & behavioural options
+# J - 1:PunchOnly, 2:CanKneeHead, 4:CanKick, 8:CanRoundHse, 16:NoDive, 32:1HitKnockdown, 64:ShoppingBags, 128:GunPanic
+
+#A                  B     C     D    E    F    G    H    I    J
+STAT_PLAYER         0.0   15.0  0    50   50   50   1.5  1.5  14
+STAT_COP            20.0  7.5   0    0    100  50   1.5  1.5  14
+STAT_MEDIC          20.0  7.5   0    0    60   40   1.5  1.5  14
+STAT_FIREMAN        20.0  7.5   0    0    60   80   1.5  1.5  14
+STAT_GANG1          17.0  7.5   0    0    10   40   1.0  1.0  14
+STAT_GANG2          17.0  7.5   0    0    10   40   1.0  1.0  14
+STAT_GANG3          17.0  7.5   0    0    10   40   1.0  1.0  14
+STAT_GANG4          17.0  7.5   0    0    10   40   1.0  1.0  14
+STAT_GANG5          17.0  7.5   0    0    10   40   1.0  1.0  14
+STAT_GANG6          17.0  7.5   0    0    10   40   1.0  1.0  14
+STAT_GANG7          17.0  7.5   0    0    10   40   1.0  1.0  14
+STAT_STREET_GUY     17.0  7.5   45   30   30   60   1.0  1.0  14
+STAT_SUIT_GUY       17.0  7.5   35   60   60   30   1.0  1.0  130
+STAT_SENSIBLE_GUY   17.0  7.5   65   30   70   20   1.0  1.0  128
+STAT_GEEK_GUY       17.0  7.5   45   10   40   5    1.0  1.0  129
+STAT_OLD_GUY        17.0  7.5   40   10   40   5    1.0  1.0  19
+STAT_TOUGH_GUY      17.0  7.5   30   70   50   60   1.0  1.0  130
+STAT_STREET_GIRL    17.0  7.5   55   30   30   60   1.0  1.0  134
+STAT_SUIT_GIRL      17.0  7.5   60   60   60   30   1.0  1.0  130
+STAT_SENSIBLE_GIRL  17.0  7.5   65   30   70   20   1.0  1.0  128
+STAT_GEEK_GIRL      17.0  7.5   80   10   40   5    1.0  1.0  129
+STAT_OLD_GIRL       17.0  7.5   80   10   40   5    1.0  1.0  177
+STAT_TOUGH_GIRL     17.0  7.5   30   70   50   60   1.0  1.0  2
+STAT_TRAMP_MALE     17.0  7.5   40   50   20   10   1.0  1.0  18
+STAT_TRAMP_FEMALE   17.0  7.5   30   30   20   10   1.0  1.0  146
+STAT_TOURIST        17.0  7.5   100  20   70   30   1.0  1.0  132
+STAT_PROSTITUTE     17.0  7.5   40   20   40   100  1.0  1.0  2
+STAT_CRIMINAL       17.0  7.5   30   55   10   60   1.0  1.0  14
+STAT_BUSKER         17.0  7.5   50   20   40   90   1.0  1.0  17
+STAT_TAXIDRIVER     17.0  7.5   70   80   30   30   1.0  1.0  130
+STAT_PSYCHO         17.0  7.5   0    100  0    50   1.0  1.0  134
+STAT_STEWARD        17.0  7.5   40   30   70   20   1.0  1.0  128
+STAT_SPORTSFAN      17.0  7.5   40   50   70   20   1.0  1.0  142
+STAT_SHOPPER        17.0  7.5   30   75   50   40   1.0  1.0  170
+STAT_OLDSHOPPER     17.0  7.5   45   65   70   20   1.0  1.0  242

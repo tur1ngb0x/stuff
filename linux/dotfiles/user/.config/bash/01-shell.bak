@@ -1,0 +1,37 @@
+builtin bind '"\e[A": history-search-backward'     # up arrow search backward in history
+builtin bind '"\e[B": history-search-forward'      # down arrow search forward in history
+builtin bind '"\e[Z": menu-complete-backward'      # shift+tab cycles backwards through completions
+builtin bind 'set colored-completion-prefix on'    # highlights completion prefix in color
+builtin bind 'set colored-stats on'                # display metadata indicators during completion
+builtin bind 'set enable-bracketed-paste on'       # prevent copy pasted text from triggering keybindings
+builtin bind 'set expand-tilde on'                 # expand ~/ to /home/<username>
+builtin bind 'set mark-directories on'             # append / to directories
+builtin bind 'set mark-modified-lines on'          # mark lines in history which were modified before execution
+builtin bind 'set mark-symlinked-directories on'   # append slash to symlinks during completion
+builtin bind 'set match-hidden-files on'           # include hidden files during completion
+builtin bind 'set menu-complete-display-prefix on' # show typed prefix during completion
+builtin bind 'set show-all-if-ambiguous on'        # list all matches automatically
+builtin bind 'set show-all-if-unmodified on'       # list all possible completions in 1st tab
+builtin bind 'set skip-completed-text on'          # do not reinsert already completed text
+builtin bind 'set visible-stats on'                # show file metadata during completion
+builtin bind 'TAB:menu-complete'                   # tab cycles forwards through completion
+builtin set -o noclobber                           # prevent > from overwriting files, use >| to force
+builtin shopt -s autocd                            # cd by typing directory name
+builtin shopt -s cdspell                           # # auto fix minor typos after using cd command
+builtin shopt -s checkwinsize                      # update lines and columns after each command
+builtin shopt -s cmdhist                           # save multi line cmds as single entry in bash history
+builtin shopt -s complete_fullquote                # enables quoting during completion
+builtin shopt -s direxpand                         # expand variables for directories
+builtin shopt -s dirspell                          # auto fix minor directory name typos during completion
+builtin shopt -s globasciiranges                   # use ascii ordering instead of locale
+builtin shopt -s histappend                        # append history instead of overwriting
+builtin shopt -s histverify                        # edit history line before execution
+builtin shopt -s interactive_comments              # enables comment support in interactive shells
+builtin shopt -s progcomp                          # enable advanced completions
+builtin shopt -s promptvars                        # expand shell variables
+builtin command stty -ixon                         # disable software flow control
+
+# builtin bind 'set bell-style visible'            # show visual flash instead of audible bell
+# builtin bind 'set enable-keypad on'              # enable app keypad mode (conflicts with up/down history search)
+# builtin bind '"\e[5~": history-search-backward'  # page up search backward in history
+# builtin bind '"\e[6~": history-search-forward'   # page down search forward in history

@@ -1,0 +1,16 @@
+dkrun.sh:
+- debian:latest
+- ubuntu:latest
+- fedora:latest
+- archlinux:latest
+- alpine:latest
+- hello-world
+- almalinux:latest
+- amazonlinux:latest
+- opensuse/leap:latest
+- oraclelinux:10
+- redhat/ubi10:latest
+- rockylinux/rockylinux:latest
+
+completely_options:
+  complete_options: -o nosort

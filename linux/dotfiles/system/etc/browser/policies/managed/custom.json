@@ -1,0 +1,138 @@
+{
+  // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // COMMON
+  // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // Extensions
+  "ExtensionSettings": {
+    // Bitwarden Password Manager
+    "nngceckbapebfimnlniiiahkandclblb": {
+      "installation_mode": "normal_installed",
+      "update_url": "https://clients2.google.com/service/update2/crx"
+    }
+  },
+
+  // Accounts
+  "SyncDisabled": true,
+
+  // Autofill
+  "AutofillAddressEnabled": false,
+  "AutofillCreditCardEnabled": false,
+  "PasswordManagerEnabled": false,
+
+  // Features
+  "BackgroundModeEnabled": false,
+  "BrowserGuestModeEnabled": false,
+  "BrowserSignin": 0,
+  "DefaultBrowserSettingEnabled": false,
+  "ExtensionManifestV2Availability": 2,
+  "MediaRecommendationsEnabled": false,
+  "QuicAllowed": false,
+  "RelaunchFastIfOutdated": 24,
+  "RelatedWebsiteSetsEnabled": false,
+  "UserFeedbackAllowed": false,
+
+  // DNS
+  "DnsOverHttpsMode": "secure",
+  "DnsOverHttpsTemplates": "https://cloudflare-dns.com/dns-query https://dns.google/dns-query",
+
+  // Permissions
+  "DefaultGeolocationSetting": 2,
+  "DefaultNotificationsSetting": 2,
+
+  // Privacy
+  "BlockThirdPartyCookies": true,
+  "CloudReportingEnabled": false,
+  "FeedbackSurveysEnabled": false,
+  "MetricsReportingEnabled": false,
+  "SafeBrowsingDeepScanningEnabled": false,
+  "SafeBrowsingExtendedReportingEnabled": false,
+  "SafeBrowsingSurveysEnabled": false,
+  "SearchSuggestEnabled": false,
+  "ShoppingListEnabled": false,
+  "UrlKeyedAnonymizedDataCollectionEnabled": false,
+
+  // Search
+  "DefaultSearchProviderEnabled": true,
+  "DefaultSearchProviderKeyword": "gu",
+  "DefaultSearchProviderName": "gu",
+  "DefaultSearchProviderSearchURL": "https://www.google.com/search?q={searchTerms}&hl=en&pws=0&udm=14",
+  "DefaultSearchProviderSuggestURL": "https://www.google.com/complete/search?q={searchTerms}&output=chrome&client=chrome&hl=en&pws=0",
+  "HomepageIsNewTabPage": true,
+  "NewTabPageLocation": "https://google.com",
+
+  // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // BRAVE https://support.brave.app/hc/en-us/articles/360039248271-Group-Policy
+  // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  "BraveAIChatEnabled": false,
+  "BraveNewsDisabled": true,
+  "BraveP3AEnabled": false,
+  "BravePlaylistEnabled": false,
+  "BraveRewardsDisabled": true,
+  "BraveSpeedreaderEnabled": false,
+  "BraveStatsPingEnabled": false,
+  "BraveTalkDisabled": true,
+  "BraveVPNDisabled": true,
+  "BraveWalletDisabled": true,
+  "BraveWaybackMachineEnabled": false,
+  "BraveWebDiscoveryEnabled": false,
+  "PromotionsEnabled": false,
+  "TorDisabled": true,
+
+  // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // CHROME https://chromeenterprise.google/policies/
+  // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  "PrivacySandboxAdMeasurementEnabled": false,
+  "PrivacySandboxAdTopicsEnabled": false,
+  "PrivacySandboxFingerprintingProtectionEnabled": false,
+  "PrivacySandboxIpProtectionEnabled": false,
+  "PrivacySandboxPromptEnabled": false,
+  "PrivacySandboxSiteEnabledAdsEnabled": false,
+  "PasswordSharingEnabled": false,
+  "QuickAnswersEnabled": false,
+  "ParcelTrackingEnabled": false,
+  "PasswordLeakDetectionEnabled": false,
+  "HighEfficiencyModeEnabled": false,
+
+  // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // EDGE https://learn.microsoft.com/en-us/DeployEdge/microsoft-edge-policies
+  // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  "BingAdsSuppression": true,
+  "DiagnosticData": 0,
+  "Edge3PSerpTelemetryEnabled": false,
+  "EdgeAutofillMlEnabled": false,
+  "EdgeCollectionsEnabled": false,
+  "EdgeCopilotEnabled": false,
+  "EdgeEDropEnabled": false,
+  "EdgeEntraCopilotPageContext": false,
+  "EdgeHistoryAISearchEnabled": false,
+  "EdgeOpenInSidebarEnabled": false,
+  "EdgeRewardsEnabled": false,
+  "EdgeSharedDeviceSupportEnabled": false,
+  "EdgeShoppingAssistantEnabled": false,
+  "EdgeWalletCheckoutEnabled": false,
+  "EdgeWalletEtreeEnabled": false,
+  "EdgeWorkspacesEnabled": false,
+  "ExtensionsPerformanceDetectorEnabled": false,
+  "EfficiencyModeEnabled": false,
+  "HideFirstRunExperience": true,
+  "HubsSidebarEnabled": false,
+  "LiveVideoTranslationEnabled": false,
+  "LocalProvidersEnabled": false,
+  "Microsoft365CopilotChatIconEnabled": false,
+  "NewTabPageBingChatEnabled": false,
+  "NewTabPageSearchBox": "redirect",
+  "PerformanceDetectorEnabled": false,
+  "PictureInPictureOverlayEnabled": false,
+  "QuickSearchShowMiniMenu": false,
+  "ShowMicrosoftRewards": false,
+  "ShowTabPreviewEnabled": false,
+  "SleepingTabsEnabled": false,
+  "SplitScreenEnabled": false,
+  "UrlDiagnosticDataEnabled": false
+}
+
+// sudo install -v -D -o root -g root -m 644 ./custom.json /etc/brave/policies/managed/custom.json
+
+// sudo install -v -D -o root -g root -m 644 ./custom.json /etc/opt/chrome/policies/managed/custom.json
+
+// sudo install -v -D -o root -g root -m 644 ./custom.json /etc/opt/edge/policies/managed/custom.json

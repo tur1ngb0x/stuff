@@ -1,0 +1,49 @@
+# PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin' # system fallback
+# PATH="$(builtin printf '%s' "${PATH}" | /usr/bin/awk -v RS=: -v ORS= '!a[$0]++ { if (NR>1) printf(":"); printf("%s", $0) }')"
+
+PATH='/usr/local/bin:/usr/bin'                                      # system
+PATH="${HOME}/.local/share/flatpak/exports/bin:${PATH}"             # user flatpaks
+PATH="${HOME}/.local/bin:${PATH}"                                   # user binaries
+PATH="${HOME}/src/stuff/linux/scripts:${PATH}"                      # user scripts
+
+newpath="$(printf '%s' "${PATH}" | awk -v RS=: '
+    !seen[$0]++ {
+        if (system("test -d \"" $0 "\"") == 0) {
+            if (n++) printf(":")
+            printf("%s",$0)
+        }
+    }')"
+
+[[ -n "${newpath}" ]] && PATH="${newpath}"
+
+builtin export PATH
+unset newpath
+
+# verbose_version(){
+#     # read current path value
+#     current_path="${PATH}"
+
+#     # split path entries using ":" as separator
+#     split_path="$(printf '%s' "${current_path}" | tr ':' '\n')"
+
+#     # remove duplicate entries while preserving first occurrence
+#     unique_path="$(printf '%s\n' "${split_path}" | awk '!seen[$0]++')"
+
+#     # check each entry with test -d to ensure it is a directory
+#     checked_path="$(printf '%s\n' "${unique_path}" | while IFS= read -r entry; do [ -d "${entry}" ] && printf '%s\n' "${entry}"; done)"
+
+#     # keep only entries that are valid directories
+#     valid_path="${checked_path}"
+
+#     # reconstruct path by joining entries with ":"
+#     newpath="$(printf '%s\n' "${valid_path}" | paste -sd: -)"
+
+#     # store result in variable newpath
+#     result_path="${newpath}"
+
+#     # assign newpath to path only if it is not empty
+#     [[ -n "${result_path}" ]] && PATH="${result_path}" && builtin export PATH
+
+#     # unset variables
+#     unset current_path split_path unique_path checked_path valid_path newpath result_path
+# }

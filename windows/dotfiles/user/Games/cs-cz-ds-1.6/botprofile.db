@@ -1,0 +1,217 @@
+
+// --------------------------------------------------------------------
+// BOT_TEMPLATE_DEFAULT
+// --------------------------------------------------------------------
+Default
+    Aggression = 100
+    AttackDelay = 0.2
+    Cost = 0
+    Difficulty = EASY
+    ReactionTime = 0.2
+    Skill = 0
+    Skin = 0
+    Teamwork = 100
+    VoicePitch = 100
+    WeaponPreference = none
+End
+
+// --------------------------------------------------------------------
+// BOT_TEMPLATE_DIFFICULTY
+// --------------------------------------------------------------------
+Template Expert
+    Difficulty = EXPERT
+    Skill = 75
+    VoicePitch = 70
+End
+Template Hard
+    Difficulty = HARD
+    Skill = 50
+    VoicePitch = 80
+End
+Template Normal
+    Difficulty = NORMAL
+    Skill = 25
+    VoicePitch = 90
+End
+Template Easy
+    Difficulty = EASY
+    Skill = 0
+    VoicePitch = 100
+End
+
+// --------------------------------------------------------------------
+// WEAPON_TEMPLATE
+// --------------------------------------------------------------------
+Template Sniper
+    WeaponPreference = awp
+    WeaponPreference = scout
+    WeaponPreference = mp5
+End
+
+// --------------------------------------------------------------------
+// BOT_TEMPLATE_EASY
+// --------------------------------------------------------------------
+Easy Jacob
+End
+Easy Ethan
+End
+Easy Charles
+End
+Easy David
+End
+Easy Kevin
+End
+Easy Quincy
+End
+Easy Ryan
+End
+Easy Peter
+End
+Easy Molly
+End
+Easy Hazel
+End
+Easy Ursula
+End
+Easy Jasmine
+End
+Easy Beatrice
+End
+Easy Grace
+End
+Easy Sophia
+End
+Easy Quinn
+End
+
+// --------------------------------------------------------------------
+// BOT_TEMPLATE_NORMAL
+// --------------------------------------------------------------------
+Normal William
+End
+Normal Samuel
+End
+Normal York
+End
+Normal Brandon
+End
+Normal Aaron
+End
+Normal Zane
+End
+Normal Michael
+End
+Normal Nadia
+End
+Normal Penelope
+End
+Normal Ashley
+End
+Normal Veronica
+End
+Normal Lily
+End
+Normal Yara
+End
+Normal Carmen
+End
+
+// --------------------------------------------------------------------
+// BOT_TEMPLATE_HARD
+// --------------------------------------------------------------------
+Hard Nathan
+End
+Hard Liam
+End
+Hard Felix
+End
+Hard Thomas
+End
+Hard Gabriel
+End
+Hard Oliver
+End
+Hard Diana
+End
+Hard Willow
+End
+Hard Tatiana
+End
+Hard Kathleen
+End
+Hard Eleanor
+End
+Hard Ruby
+End
+
+// --------------------------------------------------------------------
+// BOT_TEMPLATE_EXPERT
+// --------------------------------------------------------------------
+Expert Bug
+End
+Expert Dark
+End
+Expert Dragon
+End
+Expert Electric
+End
+Expert Fairy
+End
+Expert Fire
+End
+Expert Fighting
+End
+Expert Flying
+End
+Expert Ghost
+End
+Expert Grass
+End
+Expert Ground
+End
+Expert Ice
+End
+Expert Normal
+End
+Expert Water
+End
+Expert Poison
+End
+Expert Psychic
+End
+Expert Steel
+End
+Expert Rock
+End
+Expert Cyber
+End
+Expert Light
+End
+Expert Nuclear
+End
+Expert Time
+End
+Expert Sound
+End
+Expert Space
+End
+Expert Death
+    Aggression = 100
+    AttackDelay = 0
+    Cost = 0
+    Difficulty = EXPERT
+    ReactionTime = 0
+    Skill = 100
+    Skin = 0
+    Teamwork = 100
+    VoicePitch = 40
+    WeaponPreference = g3sg1
+    WeaponPreference = sg550
+    WeaponPreference = ak47
+    WeaponPreference = m4a1
+    WeaponPreference = galil
+    WeaponPreference = famas
+    WeaponPreference = mac10
+    WeaponPreference = tmp
+    WeaponPreference = deagle
+End

@@ -1,0 +1,64 @@
+# file name               - "${HOME}/.local/share/AM/helpers"
+# this file is sourced by - "${HOME}/.local/share/bash-completion/completions/am"
+
+# get all packages available to install
+_am_pkgs_all() {
+    local -a metadata=()
+    local file
+
+    metadata=(
+        "${HOME}/.local/share/AM/x86_64-appbundle"
+        "${HOME}/.local/share/AM/x86_64-busybox"
+        "${HOME}/.local/share/AM/x86_64-python"
+        "${HOME}/.local/share/AM/x86_64-soarpkg"
+        "${HOME}/.local/share/AM/x86_64-appimages"
+        "${HOME}/.local/share/AM/x86_64-apps"
+        "${HOME}/.local/share/AM/x86_64-portable"
+    )
+
+    # all files must exist and be non-empty
+    for file in "${metadata[@]}"; do
+        if [[ ! -s "${file}" ]]; then
+            return
+        fi
+    done
+
+    # define mapping = file -> extension
+    # set column separator = ' : ' 
+    # remove leading symbol = '◆ ' from each line
+    # append extension based on source file
+    # print one package.[extension] per line
+    awk -F ' : ' '
+        BEGIN {
+            extension_add["'"${HOME}/.local/share/AM/x86_64-appbundle"'"] = ".appbundle"
+            extension_add["'"${HOME}/.local/share/AM/x86_64-busybox"'"]   = ".busybox"
+            extension_add["'"${HOME}/.local/share/AM/x86_64-python"'"]    = ".python"
+            extension_add["'"${HOME}/.local/share/AM/x86_64-soarpkg"'"]   = ".soarpkg"
+            extension_add["'"${HOME}/.local/share/AM/x86_64-appimages"'"] = ""
+            extension_add["'"${HOME}/.local/share/AM/x86_64-apps"'"]      = ""
+            extension_add["'"${HOME}/.local/share/AM/x86_64-portable"'"]  = ""
+        }
+        {
+            sub(/^◆ /,"")
+            print $1 extension_add[FILENAME]
+        } ' "${metadata[@]}"
+}
+
+# get all packages installed on the system
+_am_pkgs_installed() {
+    local file_args=''
+
+    if command -v am &>/dev/null; then
+        file_args="${HOME}/.cache/am/files-args"
+    elif command -v appman &>/dev/null; then
+        file_args="${HOME}/.cache/appman/files-args"
+    else
+        return
+    fi
+
+    if [[ -s "${file_args}" ]]; then
+        awk '{sub(/ ◆ /,""); print $1}' "${file_args}"
+    else
+        return
+    fi
+}

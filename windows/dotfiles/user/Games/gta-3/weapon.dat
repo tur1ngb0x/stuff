@@ -1,0 +1,44 @@
+#
+# Weapons data
+#	A: Weapon name
+#	B: Fire type
+#   C: Range
+#	D: Firing Rate
+#	E: Reload
+#	F: Amount of Ammunition
+#	G: Damage
+#	H: Speed
+#	I: Radius
+#	J: Life span
+#	K: Spread
+#	L,M,N: Fire offset vector
+#	P: animation to play
+#	Q: animation to play
+#	R: animation loop start
+#	S: animation loop end
+#	T: point in animation where weapon is fired
+#	U: point in animation 2 where weapon is fired
+#	V: model id
+#	W: Flags -> 1:USE_GRAVITY  2:SLOWS_DOWN  4:DISSIPATES  8:RAND_SPEED  16:EXPANDS  32:EXPLODES  64:CANAIM
+#				128:CANAIM_WITHARM  256:1ST_PERSON  512:HEAVY  1024:THROW
+#
+###### NOT USED IN THIS VERSION ##############
+#	X:	1st person version of anim (using orig HGUN & PUMP cause they work better at mo')
+#	Y:	1st person vers of 2nd anim
+#
+#	FPS anims loaded (ie available):	FPS_PUNCH, FPS_BAT, FPS_UZI, FPS_PUMP, FPS_AK, FPS_M16, FPS_ROCKET
+
+Unarmed         MELEE        1    750  300   1000  10   -1.0  0.5    -1.0    -1.0  0.1   0.65   0.2   FIGHTppunch         KICK_floor     0   99  12  12  -1   0
+BaseballBat     MELEE        1    750  300   1000  20   -1.0  0.8    -1.0    -1.0  0.1   0.8    0.30  WEAPON_bat_h        WEAPON_bat_v   5   18  14  11  172  0
+Colt45          INSTANT_HIT  30   250  1500  10    20   -1.0  -1.0   -1.0    -1.0  0.30  0.0    0.09  WEAPON_hgun_body    RBLOCK_Cshoot  9   17  9   0   173  192
+Uzi             INSTANT_HIT  45   250  1500  25    20   -1.0  -1.0   -1.0    -1.0  0.30  -0.05  0.11  WEAPON_AK_body	  null           12  15  12  0   178  64
+Shotgun         INSTANT_HIT  30   250  3000  5     75   -1.0  -1.0   -1.0    -1.0  1.02  -0.10  0.13  WEAPON_pump         null           6   42  6   0   176  64
+AK47            INSTANT_HIT  70   1    1500  30    30   -1.0  -1.0   -1.0    -1.0  0.63  -0.04  0.10  WEAPON_AK_body      null           12  15  12  0   171  64
+M16             INSTANT_HIT  80   1    1500  20    25   -1.0  -1.0   -1.0    -1.0  0.83  -0.06  0.14  WEAPON_AK_body      null           12  15  12  0   180  64
+SniperRifle     INSTANT_HIT  100  1    2500  5     100  -1.0  -1.0   -1.0    -1.0  0.0   0.66   0.05  WEAPON_AK_body      null           12  20  12  0   177  64
+Grenade         PROJECTILE   30   100  1     1     100  0.25  -1.0   800.0   1.0   0.0   0.0    0.0   WEAPON_start_throw  WEAPON_throw   0   99  99  10  170  1060
+Molotov         PROJECTILE   30   100  1     1     50   0.25  -1.0   2000.0  5.0   0.0   0.0    0.0   WEAPON_start_throw  WEAPON_throw   0   99  99  10  174  1060
+RocketLauncher  PROJECTILE   100  100  1500  1     100  2.0   -1.0   1000.0  1.0   0.42  0.0    0.05  WEAPON_sniper       null           0   99  14  0   175  292
+FlameThrower    AREA_EFFECT  15   100  1500  500   10   0.65  0.075  1000.0  3.0   0.82  0.0    0.13  WEAPON_pump         null           6   7   6   0   181  30
+Detonator       PROJECTILE   25   100  1     1     0    2.0   -1.0   2000.0  5.0   0.0   0.0    0.13  bomber              null           0   10  3   0   182  36
+ENDWEAPONDATA

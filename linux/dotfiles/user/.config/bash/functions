@@ -1,0 +1,208 @@
+
+# /usr/bin/ls -Alh --time-style=+%Y%m%d-%H%M%S --color=always | sed 1d | column -N PERMS,LINKS,OWNER,GROUP,SIZE,MODIFIED,ITEMS
+
+ls() {
+    LC_ALL=C /usr/bin/ls \
+        --almost-all \
+        --color=always \
+        --format=verbose \
+        --group-directories-first \
+        --indicator-style=file-type \
+        --quoting-style=shell \
+        --time-style=+%Y%m%d-%H%M%S \
+        "$@" |
+    /usr/bin/awk 'NR==1 {next} {printf "%s\t%s:%s\t%s\t", $1,$3,$4,$6; for(i=7;i<=NF;i++) if($i=="->"){printf "@"; break} else printf "%s%s",(i>7?" ":""),$i; print ""}' | \
+    /usr/bin/column --table --separator $'\t' --output-separator ' ' -N PERMS,USER:GROUP,MODIFIED,ITEMS
+}
+
+cd() {
+    if [[ $# -eq 0 ]]; then
+        builtin cd "${HOME}" || builtin return
+    elif [[ $# -eq 1 ]]; then
+        builtin cd "${1}" || builtin return
+        if [ "$(/usr/bin/find . -mindepth 1 -maxdepth 1 -printf '.' | /usr/bin/head -c 50 | /usr/bin/wc -c)" -lt 50 ]; then
+            ls .
+        fi
+    else
+        printf 'too many arguments\n'
+    fi
+}
+
+testscript() {
+    local SCRIPT_NAME="${1:?Enter script name}"
+
+    if [[ ! "${SCRIPT_NAME}" =~ ^[A-Za-z0-9]+$ ]]; then
+        printf "Error: only 0-9 and A-Z a-z allowed"
+        return 1
+    fi
+
+    local SCRIPT_NAME="${SCRIPT_NAME}.bash"
+    local SCRIPT_DIR="${HOME}/src/stuff/linux/scripts"
+
+    install -v -D -m 0755 /dev/null "${SCRIPT_DIR}/${SCRIPT_NAME}"
+    code "${SCRIPT_DIR}/${SCRIPT_NAME}"
+    echo "Run the script with bash ${SCRIPT_DIR}/${SCRIPT_NAME}"
+}
+
+vscode-root () {
+    if [[ $# -eq 0 ]]; then
+        printf "usage: vscode-root <file(s)/folder(s)>\n"
+        return
+    fi
+
+    sudo rm -rf /tmp/vscode-root
+    sudo mkdir -p /tmp/vscode-root/data/User
+    sudo mkdir -p /tmp/vscode-root/extensions
+    sudo cp -fv /home/user/.config/Code/User/settings.json /tmp/vscode-root/data/User/settings.json
+
+    sudo code \
+        --disable-chromium-sandbox \
+        --disable-extensions \
+        --locale en-US \
+        --log off \
+        --new-window \
+        --no-sandbox \
+        --sync off \
+        --user-data-dir /tmp/vscode-root/data \
+        --extensions-dir /tmp/vscode-root/extensions \
+        "${@}"
+}
+
+# path() {
+#     local dir EXISTS DIR WRITE ITEMS FOLDERS FILES EXEC BINS LINKS PRIORITY=1
+
+#     IFS=':' read -r -a PATHS <<< "${PATH}"
+
+#     for dir in "${PATHS[@]}"; do
+
+#         if [ -e "${dir}" ]; then
+#             EXISTS=1
+#         else
+#             EXISTS=0
+#         fi
+
+#         if [ -d "${dir}" ]; then
+#             DIR=1
+
+#             if [ -w "${dir}" ]; then
+#                 WRITE=1
+#             else
+#                 WRITE=0
+#             fi
+
+#             ITEMS=$(find -L "${dir}" -mindepth 1 -maxdepth 1 2>/dev/null | wc -l)
+#             FOLDERS=$(find -L "${dir}" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l)
+#             FILES=$(find -L "${dir}" -mindepth 1 -maxdepth 1 -type f 2>/dev/null | wc -l)
+#             EXEC=$(find -L "${dir}" -mindepth 1 -maxdepth 1 -type f -executable 2>/dev/null | wc -l)
+#             BINS=$(find "${dir}" -mindepth 1 -maxdepth 1 -type f -executable 2>/dev/null | wc -l)
+#             LINKS=$(find "${dir}" -mindepth 1 -maxdepth 1 -type l 2>/dev/null | wc -l)
+
+#         else
+#             DIR=0
+#             WRITE=0
+#             ITEMS=0
+#             FOLDERS=0
+#             FILES=0
+#             EXEC=0
+#             BINS=0
+#             LINKS=0
+#         fi
+
+#         printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" \
+#         "${PRIORITY}" "${EXISTS}" "${DIR}" "${WRITE}" \
+#         "${ITEMS}" "${FOLDERS}" "${FILES}" \
+#         "${EXEC}" "${BINS}" "${LINKS}" \
+#         "${dir}"
+
+#         ((PRIORITY++))
+#     done | column --table \
+#     --separator $'\t' \
+#     --output-separator ' ' \
+#     -N PRIORITY,EXISTS,DIR,WRITE,ITEMS,FOLDERS,FILES,EXES,BINS,LINKS,PATH \
+#     -R 1,2,3,4,5,6,7,8,9,10
+# }
+
+# path() {
+#     local dir EXISTS DIR WRITE ITEMS FOLDERS FILES EXEC BINS LINKS MODIFIED PRIORITY=1
+#     IFS=':' read -r -a PATHS <<< "${PATH}"
+
+#     for dir in "${PATHS[@]}"; do
+#         if [ -e "${dir}" ]; then
+#             EXISTS=1
+#         else
+#             EXISTS=0
+#         fi
+
+#         if [ -d "${dir}" ]; then
+#             DIR=1
+
+#             if [ -w "${dir}" ]; then
+#                 WRITE=1
+#             else
+#                 WRITE=0
+#             fi
+
+#             ITEMS=$(find -L "${dir}" -mindepth 1 -maxdepth 1 2>/dev/null | wc -l)
+#             FOLDERS=$(find -L "${dir}" -mindepth 1 -maxdepth 1 -type d 2>/dev/null | wc -l)
+#             FILES=$(find -L "${dir}" -mindepth 1 -maxdepth 1 -type f 2>/dev/null | wc -l)
+#             EXEC=$(find -L "${dir}" -mindepth 1 -maxdepth 1 \( -type f -o -type l \) -executable 2>/dev/null | wc -l)
+#             BINS=$(find "${dir}" -mindepth 1 -maxdepth 1 -type f -executable 2>/dev/null | wc -l)
+#             LINKS=$(find "${dir}" -mindepth 1 -maxdepth 1 -type l 2>/dev/null | wc -l)
+#             MODIFIED=$(find "${dir}" -mindepth 1 -maxdepth 1 -printf '%T@\n' 2>/dev/null | sort -nr | head -n1 | xargs -r -I{} date -d "@{}" "+%Y-%m-%d %H:%M:%S")
+#         else
+#             DIR=0
+#             WRITE=0
+#             ITEMS=0
+#             FOLDERS=0
+#             FILES=0
+#             EXEC=0
+#             BINS=0
+#             LINKS=0
+#             MODIFIED="-"
+#         fi
+
+#         printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n" \
+#         "${PRIORITY}" "${EXISTS}" "${DIR}" "${WRITE}" "${ITEMS}" "${FOLDERS}" \
+#         "${FILES}" "${EXEC}" "${BINS}" "${LINKS}" "${MODIFIED}" "${dir}"
+
+#         ((PRIORITY++))
+#     done | column --table --separator '	' --output-separator ' ' \
+#     -N PRIORITY,EXISTS,DIR,WRITE,ITEMS,FOLDERS,FILES,EXES,BINS,LINKS,MODIFIED,PATH \
+#     -R 1,2,3,4,5,6,7,8,9,10,11
+# }
+
+
+path() {
+    local dir EXEC MODIFIED EXISTS
+    IFS=':' read -r -a PATHS <<< "${PATH}"
+
+    for dir in "${PATHS[@]}"; do
+        if [ -d "${dir}" ]; then
+            EXISTS=Y
+            read EXEC MODIFIED < <(find -L "${dir}" -mindepth 1 -maxdepth 1 -printf '%T@ ' \( -type f -o -type l \) -executable -printf '1\n' -o -printf '0\n' 2>/dev/null | awk '{ if ($1>max) max=$1; if ($2==1) exec++ } END { printf "%d %f\n", exec, max }')
+            MODIFIED=$(date -d "@${MODIFIED:-0}" "+%Y-%m-%d %H:%M:%S")
+        else
+            EXISTS=N; MODIFIED="-"; EXEC=0
+        fi
+
+        printf "%s\t%s\t%s\t%s\n" "${dir}" "${EXISTS}" "${MODIFIED}" "${EXEC}"
+    done | column --table --separator $'\t' -N PATH,EXISTS,MODIFIED,EXECUTABLES -R 4
+}
+
+path() {
+    local dir EXEC MODIFIED EXISTS PRIORITY=1
+    IFS=':' read -r -a PATHS <<< "${PATH}"
+
+    for dir in "${PATHS[@]}"; do
+        if [ -d "${dir}" ]; then
+            EXISTS=Y
+            read EXEC MODIFIED < <(find -L "${dir}" -mindepth 1 -maxdepth 1 -printf '%T@ ' \( -type f -o -type l \) -executable -printf '1\n' -o -printf '0\n' 2>/dev/null | awk '{ if ($1>max) max=$1; if ($2==1) exec++ } END { printf "%d %f\n", exec, max }')
+            MODIFIED=$(date -d "@${MODIFIED:-0}" "+%Y-%m-%d %H:%M:%S")
+            printf "%s\t%s\t%s\t%s\t%s\n" "${dir}" "${EXISTS}" "${PRIORITY}" "${MODIFIED}" "${EXEC}"
+            ((PRIORITY++))
+        else
+            EXISTS=N; MODIFIED="-"; EXEC=0
+            printf "%s\t%s\t%s\t%s\t%s\n" "${dir}" "${EXISTS}" "-" "${MODIFIED}" "${EXEC}"
+        fi
+    done | column --table --separator $'\t' -N PATH,EXISTS,PRIORITY,MODIFIED,EXECUTABLES -R 3,5
+}

@@ -1,0 +1,24 @@
+PROMPT_COMMAND='EXIT=$?; builtin history -a';                                                                         # prompt command
+VIRTUAL_ENV_DISABLE_PROMPT='1'                                                                                        # python venv variable
+
+PS1=''                                                                                                                # init
+PS1+='\[\e]0;\u@\h \w\a\]'                                                                                            # terminal title
+PS1+='\[\e[7m\]'                                                                                                      # ascii reverse
+PS1+=' '                                                                                                              # space
+PS1+='\u@\h'                                                                                                          # username@hostname
+PS1+=' '                                                                                                              # space
+PS1+='\w'                                                                                                             # directory
+PS1+=' '                                                                                                              # space
+PS1+='\[\e[0m\]'                                                                                                      # ascii reset
+PS1+='$([[ -n $VIRTUAL_ENV ]] && printf " (venv:%s)" "${VIRTUAL_ENV##*/}" )'                                          # python venv
+PS1+='$(git rev-parse --git-dir &>/dev/null && printf " (git:%s)" "$(git rev-parse --abbrev-ref HEAD 2>/dev/null)" )' # git branch
+PS1+='$( (( EXIT != 0 )) && printf " (exit:%s)" "${EXIT}" )'                                                          # status code
+PS1+='\n'                                                                                                             # newline
+PS1+='\$'                                                                                                             # prompt
+PS1+=' '                                                                                                              # space
+PS2='continue> '                                                                                                      # continue prompt
+PS3='select> '                                                                                                        # select prompt
+
+export PROMPT_COMMAND
+export VIRTUAL_ENV_DISABLE_PROMPT
+export PS1 PS2 PS3

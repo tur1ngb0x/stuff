@@ -1,0 +1,28 @@
+# /etc/default/zramswap
+
+# Size of zram device in MiB/GiB (mutually exclusive with PERCENT)
+# SIZE=4096
+
+# Percentage of total RAM to use (1–100). Use instead of SIZE.
+PERCENT=25
+
+# Compression algorithm (must be supported by kernel zram)
+# Check available: cat /sys/block/zram0/comp_algorithm
+ALGO=zstd
+
+# Swap priority (-1 to 32767). Higher = used before disk swap.
+PRIORITY=200
+
+# Number of zram devices to create (usually = number of CPU cores)
+NUM_DEVICES=1
+
+# Number of compression streams per device (kernel >= 4.14)
+# STREAMS=8
+
+# Optional: run-time tuning for zram
+# Number of pages to reserve free (helps prevent OOM)
+# ZRAM_PAGE_POOL=0
+
+# Optional: limits for writeback (if zram writeback is enabled)
+# ZRAM_WB_DEV=/swap_backing_file
+# ZRAM_WB_SIZE=2G

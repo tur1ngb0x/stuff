@@ -1,0 +1,9 @@
+EDITOR="micro";                                 builtin export EDITOR         # editor used by cli programs
+HISTCONTROL='ignorespace:ignoredups:erasedups'; builtin export HISTCONTROL    # make history cleaner
+HISTFILESIZE='10000';                           builtin export HISTFILESIZE   # history max lines saved in disk
+HISTSIZE='1000';                                builtin export HISTSIZE       # history max lines saved in memory per session
+HISTTIMEFORMAT='%Y%m%d-%H%M%S  ';               builtin export HISTTIMEFORMAT # history line timestamp
+LANG='en_US.UTF-8';                             builtin export LANG           # set system locale
+MANPAGER='most -s -t4 -w';                      builtin export MANPAGER       # pager used by man
+PAGER='most -s -t4 -w';                         builtin export PAGER          # pager used by cli programs
+VISUAL='micro';                                 builtin export VISUAL         # editor used by gui programs
