@@ -1,0 +1,30 @@
+[user]
+    name = tur1ngb0x
+    email = 25666761+tur1ngb0x@users.noreply.github.com
+
+[credential]
+    helper = cache --timeout 21600
+    helper = oauth
+
+[init]
+    defaultbranch = main
+
+#[color "status"]
+#    added        = brightgreen
+#    changed      = brightyellow
+#    updated      = brightgreen
+#    untracked    = brightred
+#    unmerged     = brightred
+#    branch       = brightmagenta
+#    nobranch     = brightmagenta
+#    localBranch  = brightmagenta
+#    remoteBranch = brightmagenta
+
+#[color "diff"]
+#    meta       = brightwhite
+#    frag       = brightmagenta
+#    old        = brightred
+#    new        = brightgreen
+#    commit     = brightyellow
+#    func       = brightblue
+#    whitespace = brightred
