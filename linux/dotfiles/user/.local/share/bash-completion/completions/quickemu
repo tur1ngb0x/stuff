@@ -1,0 +1,86 @@
+# bash completion for quickemu
+
+_quickemu_completions()
+{
+    local cur prev words cword
+    _init_completion || return
+
+    # Options
+    local opts="
+--access --braille --cpu-pinning --delete-disk --delete-vm
+--display --fullscreen --ignore-msrs-always --ignore-tsc-warning
+--kill --offline --shortcut --snapshot --status-quo --viewer
+--width --height --ssh-port --spice-port --public-dir
+--monitor --monitor-telnet-host --monitor-telnet-port --monitor-cmd
+--serial --serial-telnet-host --serial-telnet-port
+--keyboard --keyboard_layout --mouse --usb-controller
+--sound-card --sound-duplex --extra_args --version
+--vm
+"
+
+    # Handle value completions
+    case "${prev}" in
+        --access)
+            COMPREPLY=( $(compgen -W "local remote clientipaddress" -- "$cur") )
+            return
+            ;;
+        --display)
+            COMPREPLY=( $(compgen -W "gtk sdl cocoa none spice spice-app" -- "$cur") )
+            return
+            ;;
+        --viewer)
+            COMPREPLY=( $(compgen -W "spicy remote-viewer none" -- "$cur") )
+            return
+            ;;
+        --public-dir)
+            COMPREPLY=( $(compgen -W "none" -- "$cur") )
+            compopt -o dirnames
+            return
+            ;;
+        --monitor)
+            COMPREPLY=( $(compgen -W "socket telnet none" -- "$cur") )
+            return
+            ;;
+        --serial)
+            COMPREPLY=( $(compgen -W "socket telnet none" -- "$cur") )
+            return
+            ;;
+        --keyboard)
+            COMPREPLY=( $(compgen -W "usb ps2 virtio" -- "$cur") )
+            return
+            ;;
+        --mouse)
+            COMPREPLY=( $(compgen -W "tablet ps2 usb virtio" -- "$cur") )
+            return
+            ;;
+        --usb-controller)
+            COMPREPLY=( $(compgen -W "ehci xhci none" -- "$cur") )
+            return
+            ;;
+        --sound-card)
+            COMPREPLY=( $(compgen -W "intel-hda ac97 es1370 sb16 usb-audio virtio-sound-pci none" -- "$cur") )
+            return
+            ;;
+        --sound-duplex)
+            COMPREPLY=( $(compgen -W "hda-micro hda-duplex hda-output" -- "$cur") )
+            return
+            ;;
+        --vm)
+            COMPREPLY=( $(compgen -f -X '!*.conf' -- "$cur") )
+            return
+            ;;
+        --snapshot)
+            COMPREPLY=( $(compgen -W "apply create delete info" -- "$cur") )
+            return
+            ;;
+        apply|create|delete)
+            # snapshot tag (no predefined values)
+            return
+            ;;
+    esac
+
+    # Default: complete options
+    COMPREPLY=( $(compgen -W "${opts}" -- "$cur") )
+}
+
+complete -F _quickemu_completions quickemu

@@ -1,0 +1,65 @@
+# bash completion for quickget
+
+_quickget_completions()
+{
+    local cur prev words cword
+    _init_completion || return
+
+    # Supported OS list (from help output)
+    local os_list="
+alma alpine android antix archcraft archlinux artixlinux azurelinux batocera
+bazzite biglinux blendos bodhi bunsenlabs cachyos centos-stream chimeralinux
+crunchbang++ debian deepin devuan dragonflybsd easyos edubuntu elementary
+endeavouros endless fedora freebsd freedos garuda gentoo ghostbsd gnomeos guix
+haiku kali kdeneon kolibrios kubuntu linuxlite linuxmint lmde lubuntu maboxlinux
+macos mageia manjaro mxlinux netboot netbsd nitrux nixos nwg-shell openbsd
+openindiana opensuse oraclelinux parrotsec pclinuxos peppermint popos porteus
+primtux proxmox-ve pureos reactos rebornos rockylinux siduction slackware slax
+slint slitaz solus sparkylinux spirallinux tails tinycore trisquel tuxedo-os
+ubuntu ubuntu-budgie ubuntu-mate ubuntu-server ubuntu-unity ubuntucinnamon
+ubuntukylin ubuntustudio vanillaos void windows windows-server xubuntu zorin
+"
+
+    # Top-level options
+    local opts="
+--arch --download --create-config --open-homepage --show
+--version --help --url --check --check-all-arch
+--list --list-csv --list-json --disable-unattended
+"
+
+    case "${prev}" in
+        --arch)
+            COMPREPLY=( $(compgen -W "arm64 aarch64 amd64 x86_64" -- "$cur") )
+            return
+            ;;
+        --download|--open-homepage|--url|--check|--check-all-arch)
+            COMPREPLY=( $(compgen -W "${os_list}" -- "$cur") )
+            return
+            ;;
+        --create-config)
+            COMPREPLY=( $(compgen -W "${os_list}" -- "$cur") )
+            return
+            ;;
+        --show)
+            COMPREPLY=( $(compgen -W "${os_list}" -- "$cur") )
+            return
+            ;;
+    esac
+
+    # Positional completion logic
+    if [[ ${cword} -eq 1 ]]; then
+        COMPREPLY=( $(compgen -W "${opts} ${os_list}" -- "$cur") )
+        return
+    fi
+
+    # If first argument is OS, continue suggesting OS (no assumptions about releases)
+    if [[ ${cword} -eq 2 ]]; then
+        COMPREPLY=( $(compgen -W "${os_list}" -- "$cur") )
+        return
+    fi
+
+    # Default fallback
+    COMPREPLY=( $(compgen -W "${opts}" -- "$cur") )
+}
+
+complete -F _quickget_completions quickget

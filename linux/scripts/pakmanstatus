@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+
+export LC_ALL=C
+
+# $ sudo pacman -Qen
+# $ cat -n /home/pkgs-explicit.txt | head -n5; cat -n /home/pkgs-explicit.txt | tail -n5
+# 1  accountsservice 26.12.8-1
+# 2  alsa-firmware 1.2.4-4
+# 3  alsa-plugins 1:1.2.12-5
+# 4  alsa-utils 1.2.15.2-2
+# 5  ark 25.12.3-1
+# 203  xorg-xkill 1.0.7-1
+# 204  xorg-xrandr 1.5.3-1
+# 205  xsettingsd 1.0.2-3
+# 206  xterm 407-1
+# 207  yay 12.5.7-1
+
+readonly BASELINE_FILE='/home/pkgs-explicit.txt'
+readonly TERMINAL_WIDTH="$(tput cols)"
+
+if [[ ! -f "${BASELINE_FILE}" ]]; then
+    printf 'error: missing file: %s\n' "${BASELINE_FILE}" >&2
+    exit 1
+fi
+
+get_description() {
+    local package="$1"
+
+    (
+        pacman -Qii "${package}" 2>/dev/null \
+            || pacman -Sii "${package}" 2>/dev/null
+    ) | awk -F ': ' '
+        /^Description/ {
+            print $2
+            exit
+        }
+    '
+}
+
+print_section() {
+    local title="$1"
+    shift
+
+    local packages=("$@")
+
+    printf '\033[7m# %s - %q\033[0m\n' \
+        "${title}" \
+        "${#packages[@]}"
+
+    printf '%s\n' "${packages[*]:-}" \
+        | fmt -w "${TERMINAL_WIDTH}"
+
+    printf '\n'
+
+    {
+        local package
+        local description
+
+        for package in "${packages[@]}"; do
+            description="$(get_description "${package}")"
+
+            printf '%s\t%s\n' \
+                "${package}" \
+                "${description}"
+        done
+    } | column -t -s $'\t' -N PACKAGE,DESCRIPTION
+
+    printf '\n'
+}
+
+mapfile -t uninstalled_packages < <(
+    comm -23 \
+        <(
+            awk '{ print $1 }' "${BASELINE_FILE}" \
+            | sort
+        ) \
+        <(
+            pacman -Qqen \
+            | sort
+        )
+)
+
+mapfile -t new_packages < <(
+    comm -13 \
+        <(
+            awk '{ print $1 }' "${BASELINE_FILE}" \
+            | sort
+        ) \
+        <(
+            pacman -Qqen \
+            | sort
+        )
+)
+
+mapfile -t foreign_packages < <(
+    pacman -Qqem | sort
+)
+
+print_section \
+    'UNINSTALLED' \
+    "${uninstalled_packages[@]}"
+
+print_section \
+    'NEW' \
+    "${new_packages[@]}"
+
+print_section \
+    'FOREIGN' \
+    "${foreign_packages[@]}"

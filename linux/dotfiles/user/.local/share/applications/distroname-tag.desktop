@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=distroname-tag
+GenericName=Terminal entering distroname-tag
+Comment=Terminal entering distroname-tag
+Categories=Distrobox;System;Utility
+Exec=/home/user/.local/bin/distrobox enter distroname-tag
+Icon=/home/user/.local/share/icons/distrobox/distroname-tag.png
+Keywords=distrobox;distroname-tag
+NoDisplay=false
+Terminal=true
+TryExec=/home/user/.local/bin/distrobox
+Type=Application
+Actions=Remove;
+
+[Desktop Action Remove]
+Name=Remove distroname-tag
+Exec=/home/user/.local/bin/distrobox rm --force distroname-tag

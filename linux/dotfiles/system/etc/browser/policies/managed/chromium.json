@@ -1,0 +1,12 @@
+{
+    "DefaultSearchProviderEnabled": true,
+    "DefaultSearchProviderKeyword": "gudm14",
+    "DefaultSearchProviderName": "gudm14",
+    "DefaultSearchProviderSearchURL": "https://www.google.com/search?q={searchTerms}&hl=en&pws=0&udm=14",
+    "DefaultSearchProviderSuggestURL": "https://www.google.com/complete/search?q={searchTerms}&output=chrome&client=chrome&hl=en&pws=0",
+    "DnsOverHttpsMode": "secure",
+    "DnsOverHttpsTemplates": "https://cloudflare-dns.com/dns-query https://dns.google/dns-query",
+    "HomepageIsNewTabPage": true,
+    "NewTabPageLocation": "https://google.com",
+    "SyncDisabled": true
+}

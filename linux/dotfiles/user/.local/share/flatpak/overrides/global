@@ -1,0 +1,11 @@
+[Context]
+filesystems=!host;!host-os;!host-etc;!home
+persistant=.
+shared=!network
+
+[System Bus Policy]
+org.freedesktop.Flatpak=none
+
+[Session Bus Policy]
+org.freedesktop.Flatpak=none
+

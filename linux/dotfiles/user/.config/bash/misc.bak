@@ -1,0 +1,21 @@
+# WSL2
+if command grep -q 'microsoft-standard-WSL2' /proc/sys/kernel/osrelease; then
+    function outclip () {
+        [[ -t 0 ]] && builtin printf 'usage: <command> | outclip\n' && builtin return
+        command clip.exe
+    }
+fi
+
+# # STARSHIP
+# if command -v starship &>/dev/null; then
+#     STARSHIP_CONFIG="${HOME}/.config/starship/starship.toml"; builtin export STARSHIP_CONFIG
+#     command -p mkdir -p "${STARSHIP_CONFIG%/starship.toml}"
+#     [[ ! -f "${STARSHIP_CONFIG}" ]] && command starship preset plain-text-symbols >| "${STARSHIP_CONFIG}"
+#     function set_win_title () {
+#         local u="${USER}"; local h="${HOSTNAME}"; local d="${PWD}"
+#         command -p printf '\033]0;bash - starship - %s@%s - %s\007' "${u}" "${h}" "${d}"
+#     }
+#     starship_precmd_user_func="set_win_title"
+#     builtin export starship_precmd_user_func
+#     builtin eval "$(command starship init bash)"
+# fi

@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+_adb_toolbox() {
+    local cur subject domain
+    local permissions appops packages
+    local package_permission_actions
+    local package_appops_actions
+    local completion_actions
+
+    COMPREPLY=()
+
+    cur="${COMP_WORDS[COMP_CWORD]}"
+
+    subject="${COMP_WORDS[1]}"
+    domain="${COMP_WORDS[3]}"
+
+    permissions="ACCESS_FINE_LOCATION ACCESS_COARSE_LOCATION ACCESS_BACKGROUND_LOCATION CAMERA RECORD_AUDIO READ_CONTACTS WRITE_CONTACTS READ_CALENDAR WRITE_CALENDAR READ_PHONE_STATE CALL_PHONE ANSWER_PHONE_CALLS READ_CALL_LOG WRITE_CALL_LOG SEND_SMS RECEIVE_SMS READ_SMS BODY_SENSORS BODY_SENSORS_BACKGROUND ACTIVITY_RECOGNITION BLUETOOTH_SCAN BLUETOOTH_CONNECT BLUETOOTH_ADVERTISE READ_MEDIA_AUDIO READ_MEDIA_VIDEO READ_MEDIA_IMAGES READ_MEDIA_VISUAL_USER_SELECTED POST_NOTIFICATIONS USE_FULL_SCREEN_INTENT NEARBY_WIFI_DEVICES CHANGE_WIFI_STATE SCHEDULE_EXACT_ALARM REQUEST_INSTALL_PACKAGES MANAGE_EXTERNAL_STORAGE MANAGE_MEDIA"
+    appops="ACCESS_NOTIFICATIONS GET_USAGE_STATS MANAGE_EXTERNAL_STORAGE PICTURE_IN_PICTURE RUN_ANY_IN_BACKGROUND RUN_IN_BACKGROUND SEND_SMS START_FOREGROUND SYSTEM_ALERT_WINDOW WAKE_LOCK WRITE_SETTINGS"
+
+    package_permission_actions="list revoke"
+    package_appops_actions="list deny reset"
+    completion_actions="list save"
+
+    packages="$(adb shell cmd package list packages -3 2>/dev/null | sed 's/^package://')"
+
+    case "${COMP_CWORD}" in
+        1)
+            COMPREPLY=($(compgen -W "permission appops package completion" -- "${cur}"))
+            ;;
+
+        2)
+            case "${subject}" in
+                permission) COMPREPLY=($(compgen -W "all ${permissions}" -- "${cur}")) ;;
+                appops) COMPREPLY=($(compgen -W "all ${appops}" -- "${cur}")) ;;
+                package) COMPREPLY=($(compgen -W "${packages}" -- "${cur}")) ;;
+                completion) COMPREPLY=($(compgen -W "${completion_actions}" -- "${cur}")) ;;
+            esac
+            ;;
+
+        3)
+            case "${subject}" in
+                permission|appops) COMPREPLY=($(compgen -W "packages" -- "${cur}")) ;;
+                package) COMPREPLY=($(compgen -W "permissions appops" -- "${cur}")) ;;
+            esac
+            ;;
+
+        4)
+            case "${subject}:${domain}" in
+                permission:packages) COMPREPLY=($(compgen -W "${package_permission_actions}" -- "${cur}")) ;;
+                appops:packages) COMPREPLY=($(compgen -W "${package_appops_actions}" -- "${cur}")) ;;
+                package:permissions) COMPREPLY=($(compgen -W "${package_permission_actions}" -- "${cur}")) ;;
+                package:appops) COMPREPLY=($(compgen -W "${package_appops_actions}" -- "${cur}")) ;;
+            esac
+            ;;
+    esac
+}
+
+complete -F _adb_toolbox adb-toolbox

@@ -1,0 +1,99 @@
+{
+    "policies": {
+        "AIControls": {
+            "Default": {
+                "Locked": false,
+                "Value": "blocked"
+            },
+            "LinkPreviewKeyPoints": {
+                "Locked": false,
+                "Value": "blocked"
+            },
+            "PDFAltText": {
+                "Locked": false,
+                "Value": "blocked"
+            },
+            "SidebarChatbot": {
+                "Locked": false,
+                "Value": "blocked"
+            },
+            "SmartTabGroups": {
+                "Locked": false,
+                "Value": "blocked"
+            },
+            "SmartWindow": {
+                "Locked": false,
+                "Value": "blocked"
+            },
+            "Translations": {
+                "Locked": false,
+                "Value": "blocked"
+            }
+        },
+        "AutofillAddressEnabled": false,
+        "AutofillCreditCardEnabled": false,
+        "DNSOverHTTPS": {
+            "Enabled": true,
+            "Fallback": false,
+            "Locked": false,
+            "ProviderURL": "https://mozilla.cloudflare-dns.com/dns-query"
+        },
+        "DisableFeedbackCommands": true,
+        "DisableFirefoxAccounts": true,
+        "DisableFirefoxStudies": true,
+        "DisableRemoteImprovements": false,
+        "DisableSetDesktopBackground": true,
+        "DisableTelemetry": true,
+        "DisplayBookmarksToolbar": "never",
+        "DontCheckDefaultBrowser": true,
+        "EncryptedMediaExtensions": {
+            "Enabled": true,
+            "Locked": false
+        },
+        "FirefoxHome": {
+            "Highlights": false,
+            "Pocket": false,
+            "Search": false,
+            "Snippets": false,
+            "SponsoredPocket": false,
+            "SponsoredStories": false,
+            "SponsoredTopSites": false,
+            "Stories": false,
+            "TopSites": false
+        },
+        "FirefoxSuggest": {
+            "ImproveSuggest": false,
+            "Locked": false,
+            "SponsoredSuggestions": false,
+            "WebSuggestions": false
+        },
+        "HttpsOnlyMode": "force_enabled",
+        "NoDefaultBookmarks": true,
+        "OfferToSaveLoginsDefault": false,
+        "PictureInPicture": {
+            "Enabled": false,
+            "Locked": false
+        },
+        "PromptForDownloadLocation": true,
+        "SearchSuggestEnabled": false,
+        "UserMessaging": {
+            "ExtensionRecommendations": false,
+            "FeatureRecommendations": false,
+            "FirefoxLabs": false,
+            "Locked": false,
+            "MoreFromMozilla": false,
+            "SkipOnboarding": true,
+            "UrlbarInterventions": false
+        },
+        "ExtensionSettings": {
+            "{446900e4-71c2-419f-a6a7-df9c091e268b}": {
+                "install_url": "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi",
+                "installation_mode": "normal_installed"
+            },
+            "uBlock0@raymondhill.net": {
+                "install_url": "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi",
+                "installation_mode": "normal_installed"
+            }
+        }
+    }
+}
