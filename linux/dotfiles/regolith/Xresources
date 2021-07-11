@@ -1,0 +1,53 @@
+
+! THEME
+gnome.gtk.theme: Adwaita-dark
+gnome.icon.theme: Papirus-Dark
+gnome.terminal.update: false
+gnome.wm.theme: Adwaita
+rofi.icon-theme: Papirus-Dark
+rofi.theme: /etc/regolith/styles/lascaille/rofi.rasi
+Xcursor.theme: Breeze_Snow
+gnome.wallpaper:
+!gsettings set org.gnome.gnome-flashback.desktop draw-background false
+
+! FONT
+St.font: JetBrains Mono:pixelsize=16:antialias=true:autohint=true
+gnome.terminal.font: Ubuntu Mono 13
+i3-wm.bar.font:	pango:Ubuntu Mono 13, Material Design Icons 13
+i3-wm.font: pango:Ubuntu Mono 13
+i3-wm.workspace.01.name: 1:<span font_desc='Ubuntu Mono 13'> [1] CODE </span>
+i3-wm.workspace.02.name: 2:<span font_desc='Ubuntu Mono 13'> [2] WEB </span>
+i3-wm.workspace.03.name: 3:<span font_desc='Ubuntu Mono 13'> [3] CHAT </span>
+i3-wm.workspace.04.name: 4:<span font_desc='Ubuntu Mono 13'> [4] FILES </span>
+i3-wm.workspace.05.name: 5:<span font_desc='Ubuntu Mono 13'> [5] VIRT </span>
+i3-wm.workspace.06.name: 6:<span font_desc='Ubuntu Mono 13'> [6] </span>
+i3-wm.workspace.07.name: 7:<span font_desc='Ubuntu Mono 13'> [7] </span>
+i3-wm.workspace.08.name: 8:<span font_desc='Ubuntu Mono 13'> [8] </span>
+i3-wm.workspace.09.name: 9:<span font_desc='Ubuntu Mono 13'> [9] </span>
+i3-wm.workspace.10.name: 10:<span font_desc='Ubuntu Mono 13'> [10] </span>
+i3xrocks.value.font: Ubuntu Mono 13
+rofi.font: Ubuntu Mono 13
+
+! FONT RENDERING
+Xft.dpi: 96
+Xft.antialias: true
+Xft.hinting: true
+Xft.rgba: rgb
+Xft.autohint: false
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
+
+! I3WM
+i3-wm.bar.background.color: #1E1E1E
+i3-wm.bar.trayoutput: none
+i3-wm.client.focused_inactive.color.border: #1E1E1E 
+i3-wm.client.focused_inactive.color.child_border: #1E1E1E
+i3-wm.client.focused.color.border: #1E1E1E
+i3-wm.client.focused.color.text: #1E1E1E
+i3-wm.client.unfocused.color.border: #1E1E1E
+i3-wm.client.unfocused.color.child_border: #1E1E1E
+i3-wm.client.urgent.color.border: #1E1E1E
+i3-wm.client.urgent.color.child_border: #1E1E1E
+
+! I3XROCKS
+i3xrocks.date.format2: "%Y-%m-%d %H:%M:%S"

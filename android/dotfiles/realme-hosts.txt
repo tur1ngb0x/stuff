@@ -1,0 +1,12 @@
+
+# Realme UI 2.0
+# Wildcard entries
+
+*coloros.com
+*heytapdownload.com
+*heytapimg.com
+*heytapmobi.com
+*heytapmobile.com
+*oppomobile.com
+*realme.com
+*realmemobile.com

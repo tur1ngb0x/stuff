@@ -1,0 +1,268 @@
+
+################################################
+# Set Applications
+################################################
+set $BROWSER firefox
+set $COMPOSITOR compton -b --vsync opengl --backend glx
+set $EDITOR subl
+set $FILES pcmanfm
+set $I3EXIT "i3-nagbar -t warning -m 'Exit i3 session?' -B 'Yes' 'i3-msg exit'"
+set $I3LOCK "i3lock -c 000000 && sleep 1 && xset dpms force suspend"
+set $I3REFRESH "killall -SIGUSR1 i3status"
+set $I3SLEEP "xss-lock --transfer-sleep-lock -- i3lock --nofork"
+set $LAUNCHER "rofi -show drun -font 'Liberation Mono 13'"
+#set $LAUNCHER "i3-dmenu-desktop --dmenu="dmenu -fn 'Liberation Mono-10' -nb ''#000000 -nf '#FFFFFF'""
+set $NETWORK nm-applet
+set $RESOLUTION "xrandr -s 1920x1080"
+set $TERMINAL gnome-terminal
+set $WALLPAPER "nitrogen --restore"
+
+
+
+################################################
+# Startup Applications
+################################################
+exec_always --no-startup-id $COMPOSITOR
+exec_always --no-startup-id $RESOLUTION
+exec --no-startup-id $I3SLEEP
+exec --no-startup-id $NETWORK
+exec --no-startup-id $WALLPAPER
+
+
+
+################################################
+# Touchpad Properties
+################################################
+# elantech - tap to click
+exec_always --no-startup-id xinput set-prop 18 332 1
+# elantech - middle click emulation
+exec_always --no-startup-id xinput set-prop 18 321 1
+# elantech - mouse acceleration
+exec_always --no-startup-id xinput set-prop 18 323 0
+# elantech - natural scrolling
+exec_always --no-startup-id xinput set-prop 18 314 1
+
+
+
+#################################################
+# i3 Font
+#################################################
+font pango:Liberation Mono 10
+
+
+
+#################################################
+# i3 Bar
+#################################################
+bar {
+	status_command i3status
+	position top
+	separator_symbol "    "
+	tray_output none
+	tray_padding 4
+	workspace_buttons yes
+}
+
+
+
+#################################################
+# i3 Keybinds
+#################################################
+set $mod Mod4
+floating_modifier $mod
+set $refresh_i3status $I3REFRESH
+bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r restart
+bindsym $mod+Shift+e exec $I3EXIT
+bindsym $mod+l exec $I3LOCK
+bindsym $mod+d exec --no-startup-id $LAUNCHER
+bindsym $mod+Return exec $TERMINAL
+bindsym $mod+Shift+q kill
+
+# Volume Control
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+# Brightness Control
+bindsym --release XF86MonBrightnessUp exec xbacklight -inc 10
+bindsym --release XF86MonBrightnessDown exec xbacklight -dec 10
+
+# Select Windows
+bindsym $mod+Up focus up
+bindsym $mod+Down focus down
+bindsym $mod+Left focus left
+bindsym $mod+Right focus right
+
+# Move Windows
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Right move right
+
+# Split Window Horizontally
+bindsym $mod+h split h
+
+# Split Window Vertically
+bindsym $mod+v split v
+
+# Change Window Layouts
+#bindsym $mod+s layout stacking
+#bindsym $mod+w layout tabbed
+#bindsym $mod+e layout toggle split
+bindsym $mod+t layout toggle tabbed stacking split
+
+# Enter Fullscreen Mode
+bindsym $mod+f fullscreen toggle
+
+mode "resize" {
+	bindsym Left resize shrink width 10 px or 10 ppt
+	bindsym Down resize grow height 10 px or 10 ppt
+	bindsym Up resize shrink height 10 px or 10 ppt
+	bindsym Right resize grow width 10 px or 10 ppt
+	bindsym Return mode "default"
+	bindsym Escape mode "default"
+	bindsym $mod+r mode "default"
+}
+
+# Resize Window Mode
+bindsym $mod+r mode "resize"
+
+# Toggle Floating / Tiling
+bindsym $mod+Shift+space floating toggle
+
+# Change Focus Between Floating/Tiling
+bindsym $mod+space focus mode_toggle
+
+# Focus Parent Container
+bindsym $mod+a focus parent
+
+
+
+#################################################
+# i3 Workspaces
+#################################################
+# Workspace Names
+set $ws1 "1: CODE"
+set $ws2 "2: WEB"
+set $ws3 "3: CHILL"
+set $ws4 "4: FILES"
+set $ws5 "5: VIRT"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# CODE
+for_window [class="Geany"] move to workspace $ws1
+for_window [class="Gnome-terminal"] move to workspace $ws1
+for_window [class="kitty"] move to workspace $ws1
+for_window [class="Mousepad"] move to workspace $ws1
+for_window [class="Sublime_text"] move to workspace $ws1
+for_window [class="Xed"] move to workspace $ws1
+for_window [class="Xfce4-terminal"] move to workspace $ws1
+
+# WEB
+for_window [class="Firefox"] move to workspace $ws2
+for_window [class="Google-chrome"] move to workspace $ws2
+for_window [class="Chromium"] move to workspace $ws2
+for_window [class="xdman-Main"] move to workspace $ws2
+for_window [class="qBittorrent"] move to workspace $ws2
+
+# CHILL
+for_window [class="TelegramDesktop"] move to workspace $ws3
+for_window [class="discord"] move to workspace $ws3
+for_window [class="vlc"] move to workspace $ws3
+
+# FILES
+for_window [class="Nemo"] move to workspace $ws4
+for_window [class="Thunar"] move to workspace $ws4
+for_window [class="Org.gnome.Nautilus"] move to workspace $ws4
+for_window [class="Pcmanfm"] move to workspace $ws4
+
+# VIRT
+for_window [class="Gnome-boxes"] move to workspace $ws5
+for_window [class="Virt-manager"] move to workspace $ws5
+
+# Workspace Switching
+bindsym $mod+1 workspace number $ws1
+bindsym $mod+2 workspace number $ws2
+bindsym $mod+3 workspace number $ws3
+bindsym $mod+4 workspace number $ws4
+bindsym $mod+5 workspace number $ws5
+bindsym $mod+6 workspace number $ws6
+bindsym $mod+7 workspace number $ws7
+bindsym $mod+8 workspace number $ws8
+bindsym $mod+9 workspace number $ws9
+bindsym $mod+0 workspace number $ws10
+
+# Move Focussed Container to Workspace
+bindsym $mod+Shift+1 move container to workspace number $ws1
+bindsym $mod+Shift+2 move container to workspace number $ws2
+bindsym $mod+Shift+3 move container to workspace number $ws3
+bindsym $mod+Shift+4 move container to workspace number $ws4
+bindsym $mod+Shift+5 move container to workspace number $ws5
+bindsym $mod+Shift+6 move container to workspace number $ws6
+bindsym $mod+Shift+7 move container to workspace number $ws7
+bindsym $mod+Shift+8 move container to workspace number $ws8
+bindsym $mod+Shift+9 move container to workspace number $ws9
+bindsym $mod+Shift+0 move container to workspace number $ws10
+
+
+
+###############################################
+# i3 Settings
+###############################################
+# Default Window Orientation - horizontal|vertical|auto
+# default_orientation auto
+
+# Default Workspace Layout - default|stacking|tabbed
+# workspace_layout default
+
+# Window Title Alignment - left|center|right
+title_align center
+
+# Force window borders including GTK apps
+for_window [class=".*"] border pixel 2
+
+# Window Border Style - normal|none|pixel
+default_border pixel 2
+default_floating_border pixel 2
+
+# Hide Window Screen Borders - none|vertical|horizontal|both|smart
+hide_edge_borders smart
+
+
+
+###############################################
+# i3 Gaps Settings
+###############################################
+# Disable borders for gaps
+#for_window [class=".*"] border pixel 0
+
+# Window Gaps
+#gaps inner 10
+#gaps outer 5
+#gaps horizontal 5
+#gaps vertical 5
+#gaps top 5
+#gaps bottom 5
+#gaps left 5
+#gaps right 5
+
+# Only enable gaps on a workspace when there is at least one container
+# smart_gaps on
+
+# Only enable outer gaps when there is exactly one container
+# smart_gaps inverse_outer
+
+# Activate smart borders (always)
+# smart_borders on
+
+# Activate smart borders (only when there are effectively no gaps)
+# smart_borders no_gaps
+
+# Hide edge borders only if there is one window with no gaps
+# hide_edge_borders smart_no_gaps

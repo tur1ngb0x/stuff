@@ -1,0 +1,68 @@
+
+# ADB Initialize
+adb kill-server
+adb devices -l
+
+
+# AOSP & Google
+adb shell pm uninstall -k --user 0 com.android.chrome
+adb shell pm uninstall -k --user 0 com.android.hotwordenrollment.okgoogle
+adb shell pm uninstall -k --user 0 com.android.stk
+adb shell pm uninstall -k --user 0 com.google.android.apps.nbu.paisa.user
+adb shell pm uninstall -k --user 0 com.google.android.feedback
+adb shell pm uninstall -k --user 0 com.google.android.googlequicksearchbox
+adb shell pm uninstall -k --user 0 com.google.android.youtube
+
+# ColorOS & Oppo
+adb shell pm uninstall -k --user 0 com.coloros.assistantscreen
+adb shell pm uninstall -k --user 0 com.coloros.backuprestore
+adb shell pm uninstall -k --user 0 com.coloros.childrenspace
+adb shell pm uninstall -k --user 0 com.coloros.compass2
+adb shell pm uninstall -k --user 0 com.coloros.healthcheck
+adb shell pm uninstall -k --user 0 com.coloros.healthservice
+adb shell pm uninstall -k --user 0 com.coloros.personalassistant.overlay.common
+adb shell pm uninstall -k --user 0 com.coloros.phonemanager
+adb shell pm uninstall -k --user 0 com.coloros.securepay
+adb shell pm uninstall -k --user 0 com.coloros.securitykeyboard
+adb shell pm uninstall -k --user 0 com.coloros.video
+adb shell pm uninstall -k --user 0 com.coloros.weather.service
+adb shell pm uninstall -k --user 0 com.coloros.weather2
+adb shell pm uninstall -k --user 0 com.coloros.widget.smallweather
+adb shell pm uninstall -k --user 0 com.oppo.quicksearchbox
+adb shell pm uninstall -k --user 0 com.oppo.music
+
+# Facebook
+adb shell pm uninstall -k --user 0 com.facebook.appmanager
+adb shell pm uninstall -k --user 0 com.facebook.services
+adb shell pm uninstall -k --user 0 com.facebook.system
+
+# Heytap
+# You can remove all if you dont use Realme/Heytap online account
+adb shell pm disable-user --user 0 com.heytap.market
+adb shell pm disable-user --user 0 com.heytap.themestore
+adb shell pm uninstall -k --user 0 com.heytap.browser
+adb shell pm uninstall -k --user 0 com.heytap.cloud
+adb shell pm uninstall -k --user 0 com.heytap.habit.analysis
+adb shell pm uninstall -k --user 0 com.heytap.mcs
+adb shell pm uninstall -k --user 0 com.heytap.openid
+adb shell pm uninstall -k --user 0 com.heytap.pictorial
+adb shell pm uninstall -k --user 0 com.heytap.usercenter
+
+# Nearme & Realme
+# Secure Payment Protection Feature
+adb shell pm uninstall -k --user 0 com.nearme.atlas
+adb shell pm uninstall -k --user 0 com.realme.securitycheck
+
+# Red Tea Mobile
+# Get new SIM, recharge data plans when abroad.
+adb shell pm uninstall -k --user 0 com.redteamobile.roaming
+adb shell pm uninstall -k --user 0 com.redteamobile.roaming.deamon
+
+# Tencent
+adb shell pm uninstall -k --user 0 com.tencent.soter.soterserver
+
+# !! Warning !!
+# Blocks OTA Updates, For Advanced Users Only
+adb shell pm uninstall -k --user 0 com.coloros.sau
+adb shell pm uninstall -k --user 0 com.oppo.otaui
+adb shell pm uninstall -k --user 0 com.oppo.ota
