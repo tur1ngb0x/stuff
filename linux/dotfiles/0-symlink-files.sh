@@ -45,7 +45,7 @@ apply_nano() {
 	if [[ -f "/etc/nanorc" ]]; then
 		sudo mv "/etc/nanorc" "/etc/nanorc.bak"
 	fi
-	ln -sv "$cdir/nano/nanorc" "/etc/nanorc"
+	sudo ln -sv "$cdir/nano/nanorc" "/etc/nanorc"
 }
 
 apply_subl() {
