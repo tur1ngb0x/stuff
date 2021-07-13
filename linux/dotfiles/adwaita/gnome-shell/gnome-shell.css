@@ -1,10 +1,6 @@
 @import url("resource:///org/gnome/theme/gnome-shell.css");
 
-/*
-stage {
-	font-family: Ubuntu, sans-serif;
-	color: #000000
-}
-*/
+stage { font-size: 11pt; font-family: Ubuntu, Cantarell, Sans-Serif; color: #FFFFFF; }
 
-#panel StLabel { font-weight: normal; }
+#panel StLabel { font-weight: normal; color: #FFFFFF }
+
