@@ -1,0 +1,44 @@
+# PATH
+export PATH="${PATH:+${PATH}:}$HOME/.local/bin/"
+export PATH="${PATH:+${PATH}:}$HOME/anaconda3/"
+
+# PROGRAMS
+export BROWSER="brave"
+export EDITOR="nano"
+export VIDEO="vlc"
+export COLORTERM="truecolor"
+export TERM="xterm-256color"
+
+# XDG
+export XDG_CONFIG_HOME="$HOME/.config/"
+export XDG_DATA_HOME="$HOME/.local/share/"
+export XDG_CACHE_HOME="$HOME/.cache/"
+
+# XDG MISC
+export GTK2_RC_FILES="${XDG_CONFIG_HOME:-$HOME/.config}/gtk-2.0/gtkrc-2.0/"
+export LESSHISTFILE="-"
+export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/bash/history"
+export HISTCONTROL=ignoredups:erasedups
+export GNUPGHOME="${XDG_DATA_HOME:-$HOME/.local/share}/gnupg/"
+
+# QT5
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
+export QT_SCALE_FACTOR=1
+export QT_SCREEN_SCALE_FACTORS=1
+export QT_FONT_DPI=96
+export PLASMA_USE_QT_SCALING=1
+
+# QT5 Theming
+export QT_QPA_PLATFORMTHEME=qt5ct # or gtk2
+export QT_PLATFORMTHEME=qt5ct
+export QT_PLATFORM_PLUGIN=qt5ct
+
+# GTK
+export GDK_SCALE=1
+export GDK_DPI_SCALE=1
+
+# Elementary
+export ELM_SCALE=1
+
+# FIREFOX
+export MOZ_USE_XINPUT2="1"
