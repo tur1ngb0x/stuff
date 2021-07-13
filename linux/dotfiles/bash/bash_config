@@ -1,22 +1,26 @@
 #!/usr/bin/env bash
 
 #################################
-# BASH PROMPTS
+# BASH INITIALIZE
 #################################
 [[ $- != *i* ]] && return
 PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/\~}\007"'
 PS1='\n\[\e[0m\]\t \[\e[0m\]\u\[\e[0m\]@\[\e[0m\]\h \[\e[0m\]\w \n\[\e[0m\]\$ \[\e[0m\]'
 
-#################################
-# BASH COMPLETION
-#################################
-if [[ ! shopt -oq posix ]] ; then
+if ! shopt -oq posix; then
 	if [[ -f /usr/share/bash-completion/bash_completion ]]; then
 		builtin source /usr/share/bash-completion/bash_completion
 	elif [[ -f /etc/bash_completion ]]; then
 		builtin source /etc/bash_completion
 	fi
 fi
+
+HISTCONTROL=ignoreboth:erasedups
+HISTSIZE=1000
+HISTFILESIZE=2000
+shopt -s histappend
+shopt -s checkwinsize
+color_prompt=yes
 
 #################################
 # BASH ALIASES
