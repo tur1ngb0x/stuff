@@ -14,6 +14,10 @@ separator() { printf '\n\n\n\n'; }
 	sudo journalctl --list-boots
 	separator
 
+	echo 'sudo journalctl --catalog --boot=-2 --priority=3'
+	sudo journalctl --catalog --boot=-2 --priority=3
+	separator
+
 	echo 'sudo journalctl --catalog --boot=-1 --priority=3'
 	sudo journalctl --catalog --boot=-1 --priority=3
 	separator
@@ -25,13 +29,14 @@ separator() { printf '\n\n\n\n'; }
 	echo "find $HOME -user root"
 	find "$HOME" -user root
 	separator
-	
-	echo 'sudo find / -iname "*pacnew*"'
-	sudo find / -iname "*pacnew*" 2>/dev/null
-	separator
 
-	echo 'sudo find / -iname "*pacsave*"'
-	sudo find / -iname "*pacsave*" 2>/dev/null
-	separator
-) >> ~/system-logs-"$(date +"%Y%m%d-%H%M%S")".txt && echo "System logs saved in home directory"
+	if [[ -f /usr/bin/pacman ]]; then
+		echo 'sudo find / -iname "*pacnew*"'
+		sudo find / -iname "*pacnew*" 2>/dev/null
+		separator
 
+		echo 'sudo find / -iname "*pacsave*"'
+		sudo find / -iname "*pacsave*" 2>/dev/null
+		separator
+	fi
+) > ~/system-logs-"$(date +"%Y%m%d-%H%M%S")".txt && echo "System logs saved in home directory"
