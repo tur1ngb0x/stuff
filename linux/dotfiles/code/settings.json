@@ -5,7 +5,8 @@
     "debug.terminal.clearBeforeReusing": true,
     "editor.fontFamily": "Fira Code Retina",
     "editor.fontLigatures": false,
-    "editor.fontSize": 16,
+    "editor.fontSize": 11,
+    "editor.mouseWheelZoom": true,
     "security.workspace.trust.enabled": false,
     "security.workspace.trust.startupPrompt": "never",
     "telemetry.enableCrashReporter": false,
@@ -16,6 +17,6 @@
     "terminal.integrated.cursorStyle": "line",
     "terminal.integrated.enableBell": true,
     "window.titleBarStyle": "custom",
+    "window.zoomLevel": 0,
     "workbench.colorTheme": "Monokai",
-    "window.zoomLevel": 1,
 }
