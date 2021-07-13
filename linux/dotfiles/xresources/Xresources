@@ -6,3 +6,4 @@ Xft.autohint: false
 Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 
+XTerm*loginshell: true
