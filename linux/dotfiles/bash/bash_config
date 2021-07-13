@@ -1,81 +1,76 @@
 #!/usr/bin/env bash
 
-if [[ -f /usr/share/bash-completion/bash_completion ]]; then
-	source "/usr/share/bash-completion/bash_completion"
-fi
-
+#################################
+# BASH PROMPTS
+#################################
+[[ $- != *i* ]] && return
+PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/\~}\007"'
 PS1='\n\[\e[0m\]\t \[\e[0m\]\u\[\e[0m\]@\[\e[0m\]\h \[\e[0m\]\w \n\[\e[0m\]\$ \[\e[0m\]'
 
-HISTCONTROL=ignoreboth
-HISTSIZE=1000
-HISTFILESIZE=2000
-
-shopt -s histappend
-shopt -s checkwinsize
-shopt -s globstar
+#################################
+# BASH COMPLETION
+#################################
+if [[ ! shopt -oq posix ]] ; then
+	if [[ -f /usr/share/bash-completion/bash_completion ]]; then
+		builtin source /usr/share/bash-completion/bash_completion
+	elif [[ -f /etc/bash_completion ]]; then
+		builtin source /etc/bash_completion
+	fi
+fi
 
 #################################
 # BASH ALIASES
 #################################
+alias please="sudo "
+alias free="free --mebi --lohi --total --wide"
+alias grep="grep --color=auto"
+alias ln="ln --interactive --verbose"
+alias lsblk="lsblk --output NAME,LABEL,MOUNTPOINT,FSTYPE,SIZE,FSUSED,FSUSE%,HOTPLUG"
+alias ls="ls --all --human-readable -l --time-style=+'%Y-%m-%d %a %I:%M:%S %p' --color=auto"
+# alias ls="\ls --all --group-directories-first --human-readable -l --indicator-style=slash --time-style=+'%Y-%m-%d %a %I:%M:%S %p'" # no colors
+alias mkdir="mkdir --parents --verbose"
+alias mv="mv --interactive --verbose"
+alias rm="rm  --interactive=once --verbose"
+alias rmdir="rmdir --verbose"
+alias wget="wget --show-progress"
 
-alias du="\du -hS * | sort -hr | more"
-alias free="\free --mebi --lohi --total --wide"
-alias ln="\ln --interactive --verbose"
-alias lsblk="\lsblk --output NAME,LABEL,MOUNTPOINT,FSTYPE,SIZE,FSUSED,FSUSE%,HOTPLUG"
-alias ls="\ls --all --human-readable -l --time-style=+'%Y-%m-%d %a %I:%M:%S %p' --color=auto"
-# alias ls="\ls --all --group-directories-first --human-readable -l --indicator-style=slash --time-style=+'%Y-%m-%d %a %I:%M:%S %p'"
-alias mkdir="\mkdir --parents --verbose"
-alias mv="\mv --interactive --verbose"
-alias rm="\rm  --interactive=once --verbose"
-alias rmdir="\rmdir --verbose"
-alias wget="\wget --show-progress"
-
-alias yt-audio="\youtube-dl --ignore-errors --verbose --extract-audio --audio-format mp3 --audio-quality 0 --output '%(title)s.%(ext)s'"
-alias yt-audio-playlist="\youtube-dl --ignore-errors --verbose --extract-audio --audio-format mp3 --audio-quality 0 --output '%(playlist)s/%(title)s.%(ext)s'"
-alias yt-audio-playlist-index="\youtube-dl --ignore-errors --verbose --extract-audio --audio-format mp3 --audio-quality 0 --output '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'"
-alias yt-video="\youtube-dl --ignore-errors --verbose -f 'bestvideo+bestaudio' --output '%(title)s.%(ext)s'"
-alias yt-video-playlist="\youtube-dl --ignore-errors --verbose -f 'bestvideo+bestaudio' --output '%(playlist)s/%(title)s.%(ext)s'"
-alias yt-video-playlist-index="\youtube-dl --ignore-errors --verbose -f 'bestvideo+bestaudio' --output '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'"
-alias yt-video-channel="\youtube-dl --ignore-errors --verbose -f 'bestvideo+bestaudio' --output '%(uploader)s/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'"
-
-alias s76p="\sudo \system76-power profile"
-alias s76g="\sudo \system76-power graphics"
-alias shellcheck='$HOME/src/shellcheck-stable/shellcheck'
+alias yt-audio="youtube-dl --ignore-errors --verbose --extract-audio --audio-format mp3 --audio-quality 0 --output '%(title)s.%(ext)s'"
+alias yt-audio-playlist="youtube-dl --ignore-errors --verbose --extract-audio --audio-format mp3 --audio-quality 0 --output '%(playlist)s/%(title)s.%(ext)s'"
+alias yt-audio-playlist-index="youtube-dl --ignore-errors --verbose --extract-audio --audio-format mp3 --audio-quality 0 --output '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'"
+alias yt-audio-playlist-index-channel="youtube-dl --ignore-errors --verbose --extract-audio --audio-format mp3 --audio-quality 0 --output '%(uploader)s/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'"
+alias yt-video="youtube-dl --ignore-errors --verbose -f 'bestvideo+bestaudio' --output '%(title)s.%(ext)s'"
+alias yt-video-playlist="youtube-dl --ignore-errors --verbose -f 'bestvideo+bestaudio' --output '%(playlist)s/%(title)s.%(ext)s'"
+alias yt-video-playlist-index="youtube-dl --ignore-errors --verbose -f 'bestvideo+bestaudio' --output '%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'"
+alias yt-video-playlist-index-channel="youtube-dl --ignore-errors --verbose -f 'bestvideo+bestaudio' --output '%(uploader)s/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s'"
 
 #################################
 # BASH FUNCTIONS
 #################################
+cpsync() { ( rsync --verbose --recursive --human-readable --progress "$@" && echo 'Syncing cached writes...' && sync && echo 'Done' ) || return; }
+mkcd() { ( mkdir --parents --verbose "$1" && builtin cd "$1" ) || return; }
+cdls() { ( builtin cd "$*" && ls ) || return; }
 
-cp() { command cp --interactive --recursive --verbose "$@" && \echo 'Syncing cached writes...' && \sync && \echo 'Done'; }
-rsync() { command rsync --verbose --recursive --human-readable --progress "$@" && \echo 'Syncing cached writes...' && \sync && \echo 'Done'; }
+search() { find "$1" -iname "*$2*"; }
+sherlock() { python3 "$HOME/src/sherlock/sherlock" "$@"; }
+shellcheck() { "$HOME/src/shellcheck-stable/shellcheck" "$@"; }
 
-mkcd() { command mkdir --parents --verbose "$1" && builtin cd "$1" || exit; }
-cdls() { builtin cd "$*" && \ls; }
+condaon() { conda config --set auto_activate_base true && builtin source "$HOME/.bashrc" "$HOME/.bash_config" && echo 'Conda base environment is ENABLED.'; }
+condaoff() { conda config --set auto_activate_base false && builtin source "$HOME/.bashrc" "$HOME/.bash_config" && echo 'Conda base environment is DISABLED.'; }
 
-search() { \find "$1" -iname "*$2*"; }
-sherlock() { builtin cd ~/src/sherlock && \python3 sherlock "$@"; }
+cfg() { builtin cd "$HOME/stuff" && git status -s && git log --oneline -n 10; }
 
-condaon() { \conda config --set auto_activate_base true && builtin source "$HOME/.bashrc" "$HOME/.bash_config" && \echo "Conda base environment is ENABLED."; }
-condaoff() { \conda config --set auto_activate_base false && builtin source "$HOME/.bashrc" "$HOME/.bash_config" && \echo "Conda base environment is DISABLED."; }
+wsl-compact-memory() { sudo bash -c "echo 1 > /proc/sys/vm/compact_memory" && echo 'Done'; }
+wsl-drop-cache() { sudo bash -c "echo 1 > /proc/sys/vm/drop_caches" && echo 'Done'; }
+wsl-shutdown-all() { powershell.exe wsl.exe --shutdown; }
 
-cfg() { builtin cd "$HOME/stuff" && /usr/bin/git status -s && /usr/bin/git log --oneline -n 10; }
-
-wsl-compact-memory() { \sudo bash -c "\echo 1 > /proc/sys/vm/compact_memory" && \echo "Done"; }
-wsl-drop-cache() { \sudo bash -c "\echo 1 > /proc/sys/vm/drop_caches" && \echo "Done"; }
-wsl-shutdown-all() { powershell.exe wsl.exe --shutdown ; }
-
-adb-show-removed-apps() {
+adb-removed-apps() {
 	cat <<-'EOF'
-
-	LIST OF UN-INSTALLED APPS
-	TO RE-INSTALL: adb shell "cmd package install-existing <package_name>"
+	RE-INSTALL PACKAGES : adb shell "cmd package install-existing <package_name>"
 	EOF
 	adb shell "(pm list packages -u && pm list packages) | sort | uniq -u | cut -c 9-"
 
 	cat <<-'EOF'
-
-	LIST OF DISABLED APPS
-	TO RE-ENABLE: adb shell "pm enable --user 0 <package_name>"
+	RE-ENABLE PACKAGES : adb shell "pm enable --user 0 <package_name>"
 	EOF
 	adb shell "pm list packages -d | cut -c 9-"
 }
@@ -83,14 +78,15 @@ adb-show-removed-apps() {
 codexec() {
 	if [[ -f "$1" ]]; then
 		case "$1" in
-			*.c)		if [[ -f ./"${1%.c}" ]]; then \rm -f ./"${1%.c}"; fi;
-						\gcc "$1" -g3 -Wall -o "${1%.c}" && ./"${1%.c}" && \printf "\n" ;;
-			*.py)		if [[ -d ./__pycache__ ]]; then \rm -rf ./__pycache__; fi;
-						\python3 -m py_compile "$1" && \python3 "$1" ;;
-			*.java)		\java "$1" ;;
-			*)			echo 'Unsupported file.' ;;
+			*.c)		if [[ -f ./"${1%.c}" ]]; then rm -f ./"${1%.c}"; fi;
+					gcc "$1" -g3 -Wall -o "${1%.c}" && ./"${1%.c}" && printf "\n" ;;
+			*.py)		if [[ -d ./__pycache__ ]]; then rm -rf ./__pycache__; fi;
+					python3 -m py_compile "$1" && python3 "$1" ;;
+			*.java)		java "$1" ;;
+			*)		echo 'Unsupported file.' ;;
 		esac
 	else
 		echo 'Unsupported file.'
 	fi
 }
+
