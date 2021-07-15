@@ -5,7 +5,7 @@
 #################################
 [[ $- != *i* ]] && return
 PROMPT_COMMAND='echo -ne "\033]0;${PWD/#$HOME/\~}\007"'
-PS1='\n\[\e[0m\]\t \[\e[0m\]\u\[\e[0m\]@\[\e[0m\]\h \[\e[0m\]\w \n\[\e[0m\]\$ \[\e[0m\]'
+PS1='\n\[\e[0;1;91m\][ \[\e[0;1;93m\]\t \[\e[0;1;96m\]\u\[\e[0;1;96m\]@\[\e[0;1;96m\]\h \[\e[0;1;92m\]\w \[\e[0;1;91m\]]\n\[\e[0;1m\]\$ \[\e[0m\]'
 
 if ! shopt -oq posix; then
 	if [[ -f /usr/share/bash-completion/bash_completion ]]; then
@@ -20,12 +20,12 @@ HISTSIZE=1000
 HISTFILESIZE=2000
 shopt -s histappend
 shopt -s checkwinsize
-color_prompt=yes
 
 #################################
 # BASH ALIASES
 #################################
 alias please="sudo "
+alias diff="diff --color=auto"
 alias free="free --mebi --lohi --total --wide"
 alias grep="grep --color=auto"
 alias ln="ln --interactive --verbose"
@@ -50,7 +50,7 @@ alias yt-video-playlist-index-channel="youtube-dl --ignore-errors --verbose -f '
 #################################
 # BASH FUNCTIONS
 #################################
-cpsync() { ( rsync --verbose --recursive --human-readable --progress "$@" && echo 'Syncing cached writes...' && sync && echo 'Done' ) || return; }
+cpsync() { ( rsync --verbose --recursive --human-readable --progress "$@" && printf '\nSyncing cached writes...' && sync && printf 'Done' ) || return; }
 mkcd() { ( mkdir --parents --verbose "$1" && builtin cd "$1" ) || return; }
 cdls() { ( builtin cd "$*" && ls ) || return; }
 
