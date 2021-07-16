@@ -13,14 +13,9 @@ cdir="$(pwd)" && echo "$cdir"
 
 # SET CONFIGURATION
 apply_bash() {
-	if [[ -f "$HOME/.bash_config" ]]; then
-		rm -fv "$HOME/.bash_config"
-	fi
-	ln -sv "$cdir/bash/bash_config" "$HOME/.bash_config"
-	if [[ ! $(grep -i "source $HOME/.bash_config" "$HOME/.bashrc") ]]
-	then
-		printf "\n\nsource %s/.bash_config\n" "$HOME" >> "$HOME/.bashrc"
-	fi
+	rm -rfv "$HOME/.bashrc" /root/.bashrc
+	sudo mv -v /etc/bash.bashrc /etc/bash.bashrc.bak
+	sudo ln -sv "$cdir/bash/bash_config" /etc/bash.bashrc
 }
 
 apply_code() {
