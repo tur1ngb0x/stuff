@@ -25,11 +25,14 @@ cp -v "$HOME/.profile" "$HOME/.profile.bak"
 
 echo -e "\n\n\nExporting QT variables to $HOME/.profile..."
 cat << EOF | tee -a "$HOME/.profile"
-export QT_QPA_PLATFORMTHEME=qt5ct
-export QT_PLATFORMTHEME=qt5ct
-export QT_PLATFORM_PLUGIN=qt5ct
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
 export QT_SCALE_FACTOR=1
+export QT_SCREEN_SCALE_FACTORS=1
+export QT_FONT_DPI=96
+export PLASMA_USE_QT_SCALING=1
+export QT_QPA_PLATFORMTHEME=qt5ct # or gtk2
+export QT_PLATFORMTHEME=qt5ct
+export QT_PLATFORM_PLUGIN=qt5ct
 EOF
 
 echo -e "\n\n\nCreating $HOME/.config/qt5ct..."
